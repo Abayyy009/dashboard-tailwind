@@ -328,192 +328,250 @@
                     </ul>
                 </div>
             </header>
-            <main class="h-full pb-16 overflow-y-auto">
-                <div class="container px-6 mx-auto grid">
-                    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                        Dashboard
-                    </h2>
-                    <div class="bg-gray-600 min-f-screen p-6">
-                        <div class="bg-white rounded-lg shadow-md max-w-6xl mx-auto p-6">
-                            <!-- Header -->
-
-                            <div class="bg-white rounded-lg shadow-md max-w-6xl mx-auto p-6">
-                                <div class="mb-6">
-                                    <h1 class="text-xl font-semibold text-gray-800">Quick Link, !</h1>
-                                    <p class="text-sm text-gray-600">Quick Link adalah elemen pada dashboard yang
-                                        membantu
-                                        pengguna
-                                        menyelesaikan pembuatan link dengan cepat.</p>
-                                </div>
-
-                                <!-- Form and CTA Layout -->
-                                <div class="grid md:grid-cols-3 gap-6">
-                                    <!-- Left Side - Form -->
-                                    <div class="md:col-span-2 space-y-4">
-                                        <div>
-                                            <label class="text-sm font-medium text-gray-700">Campaign Title</label>
-                                            <input type="text" placeholder="Type Your Campaign"
-                                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                                required>
-                                            <span class="text-red-500 text-xs"></span>
-                                        </div>
-
-                                        <div>
-                                            <label class="text-sm font-medium text-gray-700">CS Admin</label>
-                                            <input type="text" placeholder="Admin Name"
-                                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        </div>
-
-                                        <div class="flex items-end gap-2">
-                                            <!-- Kotak Kode Negara -->
-                                            <div class="flex-1">
-                                                <label class="text-sm font-medium text-gray-700">WhatsApp</label>
-                                                <input type="text" value="62" readonly
-                                                    class="mt-1 w-full bg-gray-200 border border-gray-300 rounded-md p-2 text-center" />
-                                            </div>
-
-                                            <!-- Kotak Nomor Telepon -->
-                                            <div class="flex-2">
-                                                <label class="text-sm font-medium text-gray-700 invisible">Phone</label>
-                                                <input type="text" placeholder="Phone Number"
-                                                    class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-                                            </div>
-                                        </div>
-
-
-                                        <div>
-                                            <label class="text-sm font-medium text-gray-700">Meta Pixel ID</label>
-                                            <input type="text" placeholder="Meta Pixel ID"
-                                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        </div>
-
-                                        <div>
-                                            <label class="text-sm font-medium text-gray-700">PreText</label>
-                                            <input type="text" placeholder="PreText Content"
-                                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        </div>
-
-                                        <div>
-                                            <label class="text-sm font-medium text-gray-700">Description</label>
-                                            <input type="text" placeholder="Campaign Description"
-                                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        </div>
-
-                                        <div>
-                                            <label class="text-sm font-medium text-gray-700">Campaign Type</label>
-                                            <input type="text" placeholder="Campaign Type"
-                                                class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        </div>
-
-                                        <button
-                                            class="mt-4 inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm rounded-md hover:bg-teal-700 transition">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 13v7a1 1 0 001 1h3m10-18v16a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2h11l4 4z">
-                                                </path>
-                                            </svg>
-                                            Generate Link
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <br>
-                                <!-- Right Side - CTA Tracking -->
-                                <div class="bg-white border border-gray-200 rounded-md p-4 shadow-sm h-fit">
-                                    <h3 class="text-md font-semibold text-gray-800">CTA Tracking</h3>
-                                    <!-- Tambahkan elemen tracking CTA di sini -->
-                                </div>
-                            </div>
-                            <!-- WA-Go! Article Section -->
-                            <div class="mt-16"> <!-- Tambahkan jarak dari atas -->
-                                <div class="flex items-center mb-4">
-                                    <div class="w-2 h-5 bg-teal-600 rounded-sm mr-2"></div>
-                                    <h2 class="text-lg font-semibold text-gray-800">WA-Go! Article</h2>
-                                </div>
-
-                                <!-- Cards dibagi 3 baris -->
-                                <div class="w-full">
-                                    <div class="grid grid-cols-1 md:grid-cols-1 md:grid-rows-3 gap-6">
-                                        <!-- Card 1 -->
-                                        <div
-                                            class="bg-white border border-gray-100 rounded-lg shadow-sm overflow-hidden">
-                                            <div class="h-40 bg-gray-100"></div>
-                                            <div class="p-4">
-                                                <p class="text-xs text-gray-500 uppercase tracking-wide">News • 5 days
-                                                </p>
-                                                <h3 class="mt-2 text-teal-700 font-semibold">Exceptuer sint occaecat
-                                                    cupidatat non proident</h3>
-                                                <p class="mt-1 text-sm text-gray-600">Duis aute irure dolor in
-                                                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                                    pariatur.</p>
-                                                <div class="mt-4 flex items-center">
-                                                    <img src="https://via.placeholder.com/32"
-                                                        class="w-8 h-8 rounded-full mr-2" alt="author">
-                                                    <div>
-                                                        <p class="text-sm font-semibold text-teal-700">Hasan Basri</p>
-                                                        <p class="text-xs text-gray-500">Web Developer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Card 2 -->
-                                        <div
-                                            class="bg-white border border-gray-100 rounded-lg shadow-sm overflow-hidden">
-                                            <div class="h-40 bg-gray-100"></div>
-                                            <div class="p-4">
-                                                <p class="text-xs text-gray-500 uppercase tracking-wide">News • 5 days
-                                                </p>
-                                                <h3 class="mt-2 text-teal-700 font-semibold">Exceptuer sint occaecat
-                                                    cupidatat non proident</h3>
-                                                <p class="mt-1 text-sm text-gray-600">Duis aute irure dolor in
-                                                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                                    pariatur.</p>
-                                                <div class="mt-4 flex items-center">
-                                                    <img src="https://via.placeholder.com/32"
-                                                        class="w-8 h-8 rounded-full mr-2" alt="author">
-                                                    <div>
-                                                        <p class="text-sm font-semibold text-teal-700">Rizal Fakhri</p>
-                                                        <p class="text-xs text-gray-500">UX Designer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Card 3 -->
-                                        <div
-                                            class="bg-white border border-gray-100 rounded-lg shadow-sm overflow-hidden">
-                                            <div class="h-40 bg-gray-100"></div>
-                                            <div class="p-4">
-                                                <p class="text-xs text-gray-500 uppercase tracking-wide">News • 5 days
-                                                </p>
-                                                <h3 class="mt-2 text-teal-700 font-semibold">Exceptuer sint occaecat
-                                                    cupidatat non proident</h3>
-                                                <p class="mt-1 text-sm text-gray-600">Duis aute irure dolor in
-                                                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                                    pariatur.</p>
-                                                <div class="mt-4 flex items-center">
-                                                    <img src="https://via.placeholder.com/32"
-                                                        class="w-8 h-8 rounded-full mr-2" alt="author">
-                                                    <div>
-                                                        <p class="text-sm font-semibold text-teal-700">Irwansyah Saputra
-                                                        </p>
-                                                        <p class="text-xs text-gray-500">Mobile Developer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+            <div class="p-6">
+                <!-- Notifikasi -->
+                <div id="adminAlert" class="relative bg-teal-600 text-white rounded-lg mb-6 overflow-hidden">
+                    <button onclick="document.getElementById('adminAlert').remove()"
+                        class="absolute top-0 right-0 mt-2 mr-2 text-white hover:text-gray-200 text-xl font-bold focus:outline-none"
+                        aria-label="Close">
+                        &times;
+                    </button>
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold">Admin Module</h2>
+                        <p class="mt-2 text-sm">
+                            Admin Module adalah fitur yang dirancang khusus untuk mengelola semua aspek administratif
+                            dari
+                            platform atau aplikasi.
+                        </p>
                     </div>
                 </div>
-            </main>
-        </div>
 
+                <!-- Kontrol Atas -->
+                <div class="flex justify-between items-center mb-4">
+                    <button onclick="toggleModal('modalTambah')"
+                        class="mt-4 bg-white text-teal-600 px-4 py-2 rounded shadow hover:bg-gray-100 text-sm font-medium">
+                        + Add New Admin
+                    </button>
+                    <input type="text" placeholder="Cari Data Produk"
+                        class="border border-gray-300 rounded px-4 py-2 w-1/3 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                </div>
+
+                <!-- Tabel Admin -->
+                <div class="bg-white rounded-lg shadow overflow-x-auto w-full">
+                    <table class="table-auto w-full text-sm text-left text-gray-600">
+                        <thead class="bg-teal-600 text-white">
+                            <tr>
+                                <th class="py-3 px-6 text-center">No</th>
+                                <th class="py-3 px-6 text-center">Nama</th>
+                                <th class="py-3 px-6 text-center">Whatsapp</th>
+                                <th class="py-3 px-6 text-center">Qty.Click</th>
+                                <th class="py-3 px-6 text-center">Status</th>
+                                <th class="py-3 px-6 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-gray-500">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer Info + Pagination -->
+                <div class="mt-4 flex justify-between items-center text-sm text-gray-500">
+                    <div>Total Data: <span id="totalData">0</span></div>
+                    <div id="paginationControls" class="flex space-x-1"></div>
+                </div>
+
+            </div>
+
+
+            <!-- Toast Notification -->
+            <div id="toast" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg hidden">
+                <span id="toastMessage"></span>
+            </div>
+
+            <!-- Modal Tambah Data -->
+            <div id="modalTambah"
+                class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out"
+                aria-hidden="true">
+                <div
+                    class="modal-content bg-white p-6 rounded-xl w-1/2 transform scale-95 opacity-0 transition-all duration-300 ease-out">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Tambah Admin</h2>
+                        <button onclick="closeModal('modalTambah')"
+                            class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                    </div>
+                    <form id="formTambahAdmin" onsubmit="handleTambah(event)">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                            <input id="tambahNama" type="text"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Whatsapp</label>
+                            <input id="tambahWA" type="text"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button" onclick="closeModal('modalTambah')"
+                                class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+                            <button type="submit"
+                                class="px-4 py-2 rounded bg-teal-600 text-white hover:bg-teal-700">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal Edit Admin -->
+            <div id="modalEdit"
+                class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out"
+                aria-hidden="true">
+                <div
+                    class="modal-content bg-white p-6 rounded-xl w-1/2 transform scale-95 opacity-0 transition-all duration-300 ease-out">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Edit Admin</h2>
+                        <button onclick="closeModal('modalEdit')"
+                            class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                    </div>
+                    <form>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Whatsapp</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button" onclick="closeModal('modalEdit')"
+                                class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+                            <button type="submit"
+                                class="px-4 py-2 rounded bg-teal-600 text-white hover:bg-teal-700">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Script Modal & Fetch -->
+            <script>
+                let allAdminData = [];
+                let currentPage = 1;
+                const pageSize = 5;
+
+                async function fetchAdminData() {
+                    try {
+                        const response = await fetch('https://dev.katib.cloud/table/adminwago/4409/1', {
+                            headers: {
+                                'Authorization': 'Bearer DpacnJf3uEQeM7HN'
+                            }
+                        });
+
+                        if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
+
+                        const result = await response.json();
+                        if (result && result.tableData) {
+                            allAdminData = result.tableData;
+                            currentPage = 1;
+                            renderTablePage();
+                            renderPagination();
+                        } else {
+                            throw new Error('Data structure is invalid or missing tableData');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                        document.getElementById('adminTableBody').innerHTML = `
+                            <tr><td colspan="6" class="text-center py-4 text-red-500">Failed to load data</td></tr>
+                        `;
+                    }
+                }
+
+                function renderTablePage() {
+                    const tableBody = document.getElementById('adminTableBody');
+                    tableBody.innerHTML = '';
+
+                    const totalPages = Math.ceil(allAdminData.length / pageSize);
+                    const start = (currentPage - 1) * pageSize;
+                    const end = start + pageSize;
+                    const currentData = allAdminData.slice(start, end);
+
+                    if (currentData.length > 0) {
+                        currentData.forEach((admin, index) => {
+                            const row = `
+                                <tr class="border-b hover:bg-gray-100 transition">
+                                    <td class="py-3 px-6 text-center">${start + index + 1}</td>
+                                    <td class="py-3 px-6 text-left">${admin.cs_admin}</td>
+                                    <td class="py-3 px-6 text-center">${admin.phone}</td>
+                                    <td class="py-3 px-6 text-center">0</td>
+                                    <td class="py-3 px-6 text-center">
+                                        <span class="text-green-500 font-medium">Active</span>
+                                    </td>
+                                    <td class="py-3 px-6 text-center">
+                                        <button class="text-blue-500 hover:underline mr-2" onclick="editAdmin(${admin.id})">Edit</button>
+                                        <button class="text-red-500 hover:underline" onclick="deleteAdmin(${admin.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                            tableBody.insertAdjacentHTML('beforeend', row);
+                        });
+                    } else {
+                        tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">No data available</td></tr>';
+                    }
+
+                    document.getElementById('totalData').textContent = allAdminData.length;
+                }
+
+                function renderPagination() {
+                    const paginationContainer = document.getElementById('paginationControls');
+                    paginationContainer.innerHTML = '';
+                    const totalPages = Math.ceil(allAdminData.length / pageSize);
+
+                    // Tombol Previous
+                    const prevBtn = document.createElement('button');
+                    prevBtn.innerText = 'Prev';
+                    prevBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100';
+                    prevBtn.disabled = currentPage === 1;
+                    prevBtn.onclick = () => {
+                        currentPage--;
+                        renderTablePage();
+                        renderPagination();
+                    };
+                    paginationContainer.appendChild(prevBtn);
+
+                    // Tombol Angka
+                    for (let i = 1; i <= totalPages; i++) {
+                        const pageBtn = document.createElement('button');
+                        pageBtn.innerText = i;
+                        pageBtn.className = `px-3 py-1 border rounded ${i === currentPage ? 'bg-teal-600 text-white' : 'hover:bg-gray-100'}`;
+                        pageBtn.onclick = () => {
+                            currentPage = i;
+                            renderTablePage();
+                            renderPagination();
+                        };
+                        paginationContainer.appendChild(pageBtn);
+                    }
+
+                    // Tombol Next
+                    const nextBtn = document.createElement('button');
+                    nextBtn.innerText = 'Next';
+                    nextBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100';
+                    nextBtn.disabled = currentPage === totalPages;
+                    nextBtn.onclick = () => {
+                        currentPage++;
+                        renderTablePage();
+                        renderPagination();
+                    };
+                    paginationContainer.appendChild(nextBtn);
+                }
+
+                window.onload = fetchAdminData;
+            </script>
+
+
+
+
+        </div>
     </div>
 </body>
 
