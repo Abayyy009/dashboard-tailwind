@@ -14,6 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
     <script src="./assets/js/charts-lines.js" defer></script>
     <script src="./assets/js/charts-pie.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -350,7 +352,7 @@
 
                 <!-- Kontrol Atas -->
                 <div class="flex justify-between items-center mb-4">
-                    <button onclick="toggleModal('modalTambah')"
+                    <button onclick="openModal('modalTracking')"
                         class="mt-4 bg-white text-teal-600 px-4 py-2 rounded shadow hover:bg-gray-100 text-sm font-medium">
                         + Add New Admin
                     </button>
@@ -363,14 +365,14 @@
                     <table class="min-w-full w-full table-auto">
                         <thead class="bg-teal-600 text-white">
                             <tr>
-                                <th class="border px-4 py-3 text-left font-semibold w-1/12">No.</th>
-                                <th class="border px-4 py-3 text-left font-semibold w-2/12">Dekripsi</th>
-                                <th class="border px-4 py-3 text-left font-semibold w-3/12">Google</th>
-                                <th class="border px-4 py-3 text-left font-semibold w-1/12">Tiktok</th>
-                                <th class="border px-4 py-3 text-left font-semibold w-2/12">Meta</th>
-                                <th class="border px-4 py-3 text-left font-semibold w-2/12">Google Spreedsheet</th>
-                                <th class="border px-4 py-3 text-left font-semibold w-2/12">Status</th>
-                                <th class="border px-4 py-3 text-left font-semibold w-2/12">Action</th>
+                                <th class="px-6 py-3 text-center">No.</th>
+                                <th class="px-6 py-3 text-center">Dekripsi</th>
+                                <th class="px-6 py-3 text-center">Google</th>
+                                <th class="px-6 py-3 text-center">Tiktok</th>
+                                <th class="px-6 py-3 text-center">Meta</th>
+                                <th class="px-6 py-3 text-center">Google Spreedsheet</th>
+                                <th class="px-6 py-3 text-center">Status</th>
+                                <th class="px-6 py-3 text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody id="trackingTableBody">
@@ -389,67 +391,154 @@
             </div>
 
             <!-- Modal Tambah Data -->
-            <!-- Modal Template (Tambahkan ini untuk semua modal) -->
-            <div id="modalTambah"
-                class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out"
-                aria-hidden="true">
+            <div id="modalTracking"
+                class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
                 <div
-                    class="modal-content bg-white p-6 rounded-xl w-1/2 transform scale-95 opacity-0 transition-all duration-300 ease-out">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-semibold text-gray-800">Tambah tracking</h2>
-                        <button onclick="closeModal('modalTambah')"
-                            class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
-                    </div>
-                    <form>
+                    class="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg relative transform transition-all duration-300 scale-95 opacity-100">
+
+                    <!-- Tombol Close -->
+                    <button onclick="closeModal('modalTracking')"
+                        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+                        ✕
+                    </button>
+
+                    <!-- Judul -->
+                    <h2 class="text-2xl font-semibold text-center mb-6">Create New Data</h2>
+
+                    <!-- Form -->
+                    <form id="trackingForm">
+
+                        <!-- Jenis Campaign -->
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                            <input type="text"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                            <label for="campaign" class="block text-sm font-medium text-gray-700 mb-1">Jenis
+                                Campaign</label>
+                            <input type="text" id="campaign" name="campaign" placeholder="Ketik Jenis Campaign"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
                         </div>
+
+                        <!-- ID Google Analytic -->
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Whatsapp</label>
-                            <input type="text"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                            <label for="ga_id" class="block text-sm font-medium text-gray-700 mb-1">ID Google
+                                Analytic</label>
+                            <input type="text" id="ga_id" name="ga_id" placeholder="ID Google Analytic"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
-                        <div class="flex justify-end">
-                            <button type="button" onclick="closeModal('modalTambah')"
-                                class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+
+                        <!-- TikTok Pixel -->
+                        <div class="mb-4">
+                            <label for="tiktok_id" class="block text-sm font-medium text-gray-700 mb-1">ID TikTok
+                                Pixel</label>
+                            <input type="text" id="tiktok_id" name="tiktok_id" placeholder="ID TikTok Pixel"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Meta Pixel -->
+                        <div class="mb-4">
+                            <label for="meta_id" class="block text-sm font-medium text-gray-700 mb-1">ID Meta
+                                Pixel</label>
+                            <input type="text" id="meta_id" name="meta_id" placeholder="ID Meta Pixel"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Spreadsheet -->
+                        <div class="mb-4">
+                            <label for="spreadsheet_id" class="block text-sm font-medium text-gray-700 mb-1">ID Google
+                                Spreadsheet</label>
+                            <input type="text" id="spreadsheet_id" name="spreadsheet_id"
+                                placeholder="ID Google Spreadsheet"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Status -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <div class="flex gap-4 items-center">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="status" value="on" class="form-radio text-indigo-600"
+                                        checked>
+                                    <span class="ml-2">On</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="status" value="off" class="form-radio text-gray-600">
+                                    <span class="ml-2">Off</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Tombol -->
+                        <div class="flex justify-center">
                             <button type="submit"
-                                class="px-4 py-2 rounded bg-teal-600 text-white hover:bg-teal-700">Simpan</button>
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg mr-3 transition">
+                                Save
+                            </button>
+                            <button type="button" onclick="closeModal('modalTracking')"
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg transition">
+                                Cancel
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- Modal Edit tracking (Sama seperti Tambah, hanya isi yang berbeda) -->
-            <div id="modalEdit"
-                class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out"
-                aria-hidden="true">
+            <!-- MODAL EDIT -->
+            <div id="modalEditTracking"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50">
                 <div
-                    class="modal-content bg-white p-6 rounded-xl w-1/2 transform scale-95 opacity-0 transition-all duration-300 ease-out">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-semibold text-gray-800">Edit tracking</h2>
-                        <button onclick="closeModal('modalEdit')"
-                            class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
-                    </div>
-                    <form>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                            <input type="text"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                value="CS PT Giri Mukti Sentosa" />
+                    class="bg-white rounded-xl p-6 w-full max-w-lg transform transition-all scale-95 opacity-0 duration-300">
+                    <h2 class="text-xl font-semibold mb-4">Edit Tracking</h2>
+                    <form id="editTrackingForm" class="space-y-4">
+                        <!-- Hidden ID -->
+                        <input type="hidden" id="tracking_id" name="tracking_id">
+
+                        <div>
+                            <label for="google_analytic_id" class="block text-sm font-medium">Google Analytics
+                                ID</label>
+                            <input type="number" id="google_analytic_id" class="w-full border px-3 py-2 rounded"
+                                required>
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Whatsapp</label>
-                            <input type="text"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                value="+6281288872682" />
+
+                        <div>
+                            <label for="google_spreadsheet_id" class="block text-sm font-medium">Google Spreadsheet
+                                ID</label>
+                            <input type="text" id="google_spreadsheet_id" class="w-full border px-3 py-2 rounded"
+                                required>
                         </div>
-                        <div class="flex justify-end">
-                            <button type="button" onclick="closeModal('modalEdit')"
-                                class="mr-2 px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+
+                        <div>
+                            <label for="tiktok_pixel_id" class="block text-sm font-medium">TikTok Pixel ID</label>
+                            <input type="number" id="tiktok_pixel_id" class="w-full border px-3 py-2 rounded" required>
+                        </div>
+
+                        <div>
+                            <label for="meta_pixel_id" class="block text-sm font-medium">Meta Pixel ID</label>
+                            <input type="number" id="meta_pixel_id" class="w-full border px-3 py-2 rounded" required>
+                        </div>
+
+                        <div>
+                            <label for="campaign_type" class="block text-sm font-medium">Campaign Type</label>
+                            <input type="text" id="campaign_type" class="w-full border px-3 py-2 rounded" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Status</label>
+                            <div class="flex items-center gap-4">
+                                <label class="flex items-center gap-1">
+                                    <input type="radio" name="status" value="on" class="accent-indigo-600" required>
+                                    <span>On</span>
+                                </label>
+                                <label class="flex items-center gap-1">
+                                    <input type="radio" name="status" value="off" class="accent-indigo-600">
+                                    <span>Off</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-2">
+                            <button type="button" onclick="closeModal('modalEditTracking')"
+                                class="bg-gray-300 px-4 py-2 rounded">Batal</button>
                             <button type="submit"
-                                class="px-4 py-2 rounded bg-teal-600 text-white hover:bg-teal-700">Update</button>
+                                class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -457,116 +546,325 @@
 
             <!-- Script Animasi Modal -->
             <script>
-                let alltrackingData = [];
+                // Global state
+                let allTrackingData = [];
                 let currentPage = 1;
                 const pageSize = 5;
 
-                async function fetchtrackingData() {
+                window.onload = fetchTrackingData;
+
+                async function fetchTrackingData() {
                     try {
                         const response = await fetch('https://dev.katib.cloud/table/trackingwago/4409/1', {
-                            headers: {
-                                'Authorization': 'Bearer DpacnJf3uEQeM7HN'
-                            }
+                            headers: { 'Authorization': 'Bearer DpacnJf3uEQeM7HN' }
                         });
-
-                        if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
-
                         const result = await response.json();
-                        if (result && result.tableData) {
-                            alltrackingData = result.tableData;
-                            currentPage = 1;
-                            renderTablePage();
-                            renderPagination();
-                        } else {
-                            throw new Error('Data structure is invalid or missing tableData');
-                        }
+
+                        if (!response.ok || !result.tableData) throw new Error('Failed to load or parse data.');
+
+                        allTrackingData = result.tableData;
+                        currentPage = 1;
+                        renderTablePage();
+                        renderPagination();
                     } catch (error) {
-                        console.error('Error fetching data:', error);
-                        document.getElementById('trackingTableBody').innerHTML = `
-                            <tr><td colspan="6" class="text-center py-4 text-red-500">Failed to load data</td></tr>
-                        `;
+                        console.error(error);
+                        document.getElementById('trackingTableBody').innerHTML =
+                            `<tr><td colspan="8" class="text-center py-4 text-red-500">Gagal memuat data</td></tr>`;
                     }
                 }
 
                 function renderTablePage() {
                     const tableBody = document.getElementById('trackingTableBody');
                     tableBody.innerHTML = '';
-
-                    const totalPages = Math.ceil(alltrackingData.length / pageSize);
                     const start = (currentPage - 1) * pageSize;
                     const end = start + pageSize;
-                    const currentData = alltrackingData.slice(start, end);
+                    const currentData = allTrackingData.slice(start, end);
 
-                    if (currentData.length > 0) {
-                        currentData.forEach((tracking, index) => {
-                            const row = `
-                                <tr class="border-b hover:bg-gray-100 transition">
-                                    <td class="py-3 px-6 text-center">${start + index + 1}</td>
-                                    <td class="py-3 px-6 text-left">${tracking.description}</td>
-                                    <td class="py-3 px-6 text-center">${tracking.google_analytic_id}</td>
-                                    <td class="py-3 px-6 text-center">${tracking.tiktok_pixel_id}</td>
-                                    <td class="py-3 px-6 text-center">${tracking.meta_pixel_id}</td>
-                                    <td class="py-3 px-6 text-center">${tracking.google_spreadsheet_id}</td>
-                                    <td class="py-3 px-6 text-center">${tracking.status}</td>
-                                    <td class="py-3 px-6 text-center">
-                                        <button class="text-blue-500 hover:underline mr-2" onclick="edittracking(${tracking.id})">Edit</button>
-                                        <button class="text-red-500 hover:underline" onclick="deletetracking(${tracking.id})">Delete</button>
-                                    </td>
-                                </tr>
-                            `;
-                            tableBody.insertAdjacentHTML('beforeend', row);
-                        });
-                    } else {
-                        tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">No data available</td></tr>';
+                    if (currentData.length === 0) {
+                        tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">Tidak ada data</td></tr>`;
+                        return;
                     }
 
-                    document.getElementById('totalData').textContent = alltrackingData.length;
+                    currentData.forEach((item, index) => {
+                        const row = `
+                            <tr class="border-b hover:bg-gray-100 transition">
+                                <td class="py-3 px-6 text-center">${start + index + 1}</td>
+                                <td class="py-3 px-6 text-left">${item.description}</td>
+                                <td class="py-3 px-6 text-center">${item.google_analytic_id}</td>
+                                <td class="py-3 px-6 text-center">${item.tiktok_pixel_id}</td>
+                                <td class="py-3 px-6 text-center">${item.meta_pixel_id}</td>
+                                <td class="py-3 px-6 text-center">${item.google_spreadsheet_id}</td>
+                                <td class="py-3 px-6 text-center">${item.status}</td>
+                                <td class="py-3 px-6 text-center flex gap-2 justify-center">
+    <button onclick="editTracking(${item.tool_id})" class="flex items-center justify-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition">
+        <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png" alt="Edit" class="w-4 h-4" />
+        <span class="hidden sm:inline">Edit</button>
+    <button onclick="deleteTracking(${item.id})"  class="flex items-center justify-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition">
+        <img src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt="Delete" class="w-4 h-4" />
+        <span class="hidden sm:inline">Delete</button>
+</td>
+
+                            </tr>
+                        `;
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+
+                    document.getElementById('totalData').textContent = allTrackingData.length;
                 }
 
                 function renderPagination() {
-                    const paginationContainer = document.getElementById('paginationControls');
-                    paginationContainer.innerHTML = '';
-                    const totalPages = Math.ceil(alltrackingData.length / pageSize);
+                    const container = document.getElementById('paginationControls');
+                    container.innerHTML = '';
+                    const totalPages = Math.ceil(allTrackingData.length / pageSize);
 
-                    // Tombol Previous
-                    const prevBtn = document.createElement('button');
-                    prevBtn.innerText = 'Prev';
-                    prevBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100';
-                    prevBtn.disabled = currentPage === 1;
-                    prevBtn.onclick = () => {
+                    const navButton = (text, disabled, handler) => {
+                        const btn = document.createElement('button');
+                        btn.textContent = text;
+                        btn.disabled = disabled;
+                        btn.className = 'px-3 py-1 border rounded hover:bg-gray-100';
+                        btn.onclick = handler;
+                        container.appendChild(btn);
+                    };
+
+                    navButton('Prev', currentPage === 1, () => {
                         currentPage--;
                         renderTablePage();
                         renderPagination();
-                    };
-                    paginationContainer.appendChild(prevBtn);
+                    });
 
-                    // Tombol Angka
                     for (let i = 1; i <= totalPages; i++) {
-                        const pageBtn = document.createElement('button');
-                        pageBtn.innerText = i;
-                        pageBtn.className = `px-3 py-1 border rounded ${i === currentPage ? 'bg-teal-600 text-white' : 'hover:bg-gray-100'}`;
-                        pageBtn.onclick = () => {
+                        const btn = document.createElement('button');
+                        btn.textContent = i;
+                        btn.className = `px-3 py-1 border rounded ${i === currentPage ? 'bg-teal-600 text-white' : 'hover:bg-gray-100'}`;
+                        btn.onclick = () => {
                             currentPage = i;
                             renderTablePage();
                             renderPagination();
                         };
-                        paginationContainer.appendChild(pageBtn);
+                        container.appendChild(btn);
                     }
 
-                    // Tombol Next
-                    const nextBtn = document.createElement('button');
-                    nextBtn.innerText = 'Next';
-                    nextBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100';
-                    nextBtn.disabled = currentPage === totalPages;
-                    nextBtn.onclick = () => {
+                    navButton('Next', currentPage === totalPages, () => {
                         currentPage++;
                         renderTablePage();
                         renderPagination();
-                    };
-                    paginationContainer.appendChild(nextBtn);
+                    });
+                }
+                document.getElementById('trackingForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    const campaign = document.getElementById('campaign').value.trim();
+                    const gaId = document.getElementById('ga_id').value.trim();
+                    const tiktokId = document.getElementById('tiktok_id').value.trim();
+                    const metaId = document.getElementById('meta_id').value.trim();
+                    const spreadsheetId = document.getElementById('spreadsheet_id').value.trim();
+                    const statusInput = document.querySelector('input[name="status"]:checked');
+
+                    if (!campaign || !statusInput) return alert('Lengkapi form terlebih dahulu.');
+
+                    try {
+                        const response = await fetch('https://dev.katib.cloud/add/trackingwago/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer DpacnJf3uEQeM7HN'
+                            },
+                            body: JSON.stringify({
+                                owner_id: 4409,
+                                campaign_type: campaign,
+                                google_analytic_id: gaId || null,
+                                tiktok_pixel_id: tiktokId || null,
+                                meta_pixel_id: metaId || null,
+                                google_spreadsheet_id: spreadsheetId || null,
+                                status: statusInput.value
+                            })
+                        });
+
+                        const result = await response.json();
+                        if (!response.ok) throw new Error(result.message);
+
+                        showPopupSuccess('Data berhasil disimpan!');
+                        closeModal('modalTracking');
+                        fetchTrackingData();
+                    } catch (error) {
+                        showPopupError(error.message || 'Gagal menyimpan data.');
+                    }
+                });
+                // Fungsi untuk tombol Edit
+                function openEditModal(data) {
+                    console.log("Membuka modal dengan data:", data);
+
+                    document.getElementById("tracking_id").value = data.tool_id;
+                    document.getElementById("google_analytic_id").value = data.google_analytic_id;
+                    document.getElementById("google_spreadsheet_id").value = data.google_spreadsheet_id;
+                    document.getElementById("tiktok_pixel_id").value = data.tiktok_pixel_id;
+                    document.getElementById("meta_pixel_id").value = data.meta_pixel_id;
+                    document.getElementById("campaign_type").value = data.description || "";  // optional
+                    const statusRadios = document.querySelectorAll('input[name="status"]');
+                    statusRadios.forEach(radio => {
+                        radio.checked = (radio.value === data.status.toLowerCase());
+                    });
+
+                    const modal = document.getElementById("modalEditTracking");
+                    modal.classList.remove("hidden");
+                    setTimeout(() => {
+                        modal.querySelector("div").classList.remove("scale-95", "opacity-0");
+                        modal.querySelector("div").classList.add("scale-100", "opacity-100");
+                    }, 10);
                 }
 
-                window.onload = fetchtrackingData;
+
+                // Fungsi untuk form submit edit
+                document.getElementById("editTrackingForm").addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    console.log("Form Edit dikirim");
+
+                    const id = document.getElementById("tracking_id").value;
+                    console.log("Tool ID yang akan diupdate:", id);
+
+                    const payload = {
+                        google_analytic_id: document.getElementById("google_analytic_id").value,
+                        google_spreadsheet_id: document.getElementById("google_spreadsheet_id").value,
+                        tiktok_pixel_id: document.getElementById("tiktok_pixel_id").value,
+                        meta_pixel_id: document.getElementById("meta_pixel_id").value,
+                        campaign_type: document.getElementById("campaign_type").value,
+                        status: document.querySelector('input[name="status"]:checked').value
+
+                    };
+
+                    console.log("Payload yang akan dikirim:", payload);
+
+                    fetch(`https://dev.katib.cloud/update/trackingwago/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer DpacnJf3uEQeM7HN"
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                        .then(res => {
+                            console.log("Status response:", res.status);
+                            if (!res.ok) throw new Error("Gagal update data");
+                            return res.json();
+                        })
+                        .then(data => {
+                            console.log("Update berhasil, data:", data);
+                            showPopupSuccess("Data berhasil diperbarui!");
+                            closeModal("modalEditTracking");
+                            fetchTrackingData(); // ⬅️ refresh tabel
+                        })
+                        .catch(err => {
+                            console.error("Error saat update:", err);
+                            showPopupError("Terjadi kesalahan saat mengupdate.");
+                        });
+                });
+
+                async function deleteTracking(id) {
+                    // Cari data tracking berdasarkan ID
+                    const tracking = allTrackingData.find(t => t.tracking_id === id);
+
+                    if (!tracking) {
+                        showPopupError("Data tracking tidak ditemukan.");
+                        return;
+                    }
+
+                    // Konfirmasi penghapusan
+                    const confirmation = await Swal.fire({
+                        title: "Hapus Tracking?",
+                        text: `Apakah Anda yakin ingin menghapus data tracking: ${tracking.nama_campaign || 'Tanpa Nama'}?`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Hapus",
+                        cancelButtonText: "Batal"
+                    });
+
+                    if (!confirmation.isConfirmed) {
+                        return;
+                    }
+
+                    // Siapkan data yang akan dikirim
+                    const deleteData = {
+                        owner_id: 4409, // sesuai permintaan
+                        nama_campaign: tracking.description,
+                        platform: tracking.platform // sesuaikan dengan field yang ada di tracking
+                    };
+
+                    console.log("📌 Data yang dikirim saat DELETE:", deleteData);
+
+                    try {
+                        const response = await fetch(`https://dev.katib.cloud/delete/trackingwago/${id}`, {
+                            method: 'PUT', // diasumsikan pakai PUT seperti admin
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer DpacnJf3uEQeM7HN'
+                            },
+                            body: JSON.stringify(deleteData)
+                        });
+
+                        if (response.ok) {
+                            showPopupSuccess("Data tracking berhasil dihapus!");
+
+                            allTrackingData = allTrackingData.filter(t => t.tracking_id !== id);
+
+                            // Hitung ulang jumlah halaman
+                            const totalPages = Math.ceil(allTrackingData.length / pageSize);
+
+                            // Jika currentPage melebihi jumlah halaman baru, sesuaikan
+                            if (currentPage > totalPages) {
+                                currentPage = totalPages > 0 ? totalPages : 1;
+                            }
+
+                            renderTablePage();
+                            renderPagination();
+                        } else {
+                            const result = await response.json();
+                            showPopupError(result.message || "Gagal menghapus data tracking.");
+                        }
+                    } catch (error) {
+                        console.error("❌ Error saat menghapus data tracking:", error.message);
+                        showPopupError("Terjadi kesalahan saat menghapus data.");
+                    }
+                }
+
+
+
+
+
+                function editTracking(tool_id) {
+                    const data = allTrackingData.find(item => item.tool_id === tool_id);
+                    if (!data) {
+                        console.error("Data tidak ditemukan untuk tool_id:", tool_id);
+                        return;
+                    }
+                    openEditModal(data);
+                }
+
+
+                function openModal(id) {
+                    const modal = document.getElementById(id);
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        modal.children[0].classList.remove('scale-95', 'opacity-0');
+                        modal.children[0].classList.add('scale-100', 'opacity-100');
+                    }, 50);
+                }
+
+                function closeModal(id) {
+                    const modal = document.getElementById(id);
+                    modal.children[0].classList.remove('scale-100', 'opacity-100');
+                    modal.children[0].classList.add('scale-95', 'opacity-0');
+                    setTimeout(() => modal.classList.add('hidden'), 300);
+                }
+
+                function showPopupSuccess(message) {
+                    Swal.fire({ icon: 'success', title: 'Sukses', text: message, confirmButtonColor: '#6366f1' });
+                }
+
+                function showPopupError(message) {
+                    Swal.fire({ icon: 'error', title: 'Gagal', text: message, confirmButtonColor: '#6366f1' });
+                }
             </script>
 
 
