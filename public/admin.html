@@ -497,7 +497,7 @@
                         const result = await response.json();
                         if (result && result.tableData) {
                             allAdminData = result.tableData;
-                            filteredData = [...allAdminData]; // set default view
+                            filteredData = [...allAdminData];
                             currentPage = 1;
                             renderTablePage();
                             renderPagination();
@@ -510,7 +510,7 @@
                 <tr><td colspan="6" class="text-center py-4 text-red-500">Failed to load data</td></tr>
             `;
                     } finally {
-                        document.getElementById('loader').classList.add('hidden');
+                        document.getElementById('loader')?.classList.add('hidden');
                     }
                 }
 
@@ -604,60 +604,18 @@
                     paginationContainer.appendChild(nextBtn);
                 }
 
-                // Input listener untuk pencarian admin
-                const searchInput = document.querySelector('input[placeholder="Cari Data Produk"]');
-                searchInput.addEventListener('input', (e) => {
-                    const query = e.target.value.trim().toLowerCase();
-
-                    // Show loading while filtering
-                    const tableBody = document.getElementById('adminTableBody');
-                    tableBody.innerHTML = `
-            <tr>
-                <td colspan="6" class="py-4 text-center">
-                    <div class="flex justify-center items-center">
-                        <div class="animate-spin h-6 w-6 border-4 border-teal-600 border-t-transparent rounded-full"></div>
-                        <span class="ml-2 text-teal-600 text-sm">Memfilter data...</span>
-                    </div>
-                </td>
-            </tr>
-        `;
-
-                    setTimeout(() => {
-                        filteredData = allAdminData.filter(admin =>
-                            admin.cs_admin?.toLowerCase().includes(query) ||
-                            admin.phone?.toLowerCase().includes(query)
-                        );
-                        currentPage = 1;
-                        renderTablePage();
-                        renderPagination();
-                    }, 300);
-                });
-
-                // Fetch data when page loads
-                fetchAdminData();
-
-
-
-                document.getElementById('createAdminForm').addEventListener('submit', async function (e) {
+                document.querySelector('#createAdminForm').addEventListener('submit', async function (e) {
                     e.preventDefault();
-
                     const csAdmin = document.getElementById('cs_admin').value.trim();
-                    let phone = document.getElementById('phone').value.trim();
+                    let phone = document.getElementById('phone').value.trim().replace(/\D/g, '');
 
                     if (!csAdmin || !phone) {
                         showPopupError('Nama dan nomor WhatsApp wajib diisi.');
                         return;
                     }
 
-                    phone = phone.replace(/\D/g, '');
-
-                    if (phone.length > 13) {
-                        showPopupError('Nomor WhatsApp maksimal 13 digit.');
-                        return;
-                    }
-
-                    if (phone.startsWith('0')) {
-                        showPopupError('Nomor WhatsApp tidak boleh diawali dengan angka 0.');
+                    if (phone.length > 13 || phone.startsWith('0')) {
+                        showPopupError('Nomor tidak valid (maks 13 digit & tidak boleh diawali 0).');
                         return;
                     }
 
@@ -681,11 +639,12 @@
                             showPopupSuccess('Data berhasil disimpan!');
                             if (result && result.data) {
                                 allAdminData.push(result.data);
+                                filteredData = [...allAdminData];
+                                currentPage = Math.ceil(allAdminData.length / pageSize);
                             } else {
-                                fetchAdminData();
+                                await fetchAdminData();
                             }
                             closeModal('modalCreate');
-                            currentPage = Math.ceil(allAdminData.length / pageSize);
                             renderTablePage();
                             renderPagination();
                         } else {
@@ -697,43 +656,11 @@
                     }
                 });
 
-                document.getElementById('phone').addEventListener('input', function () {
-                    this.value = this.value.replace(/\D/g, '').slice(0, 13);
-                });
-
-
-                // Fungsi untuk membuka modal dan mengisi data admin yang akan diedit
-                function editAdmin(id) {
-                    console.log('🔍 ID diterima untuk edit:', id);
-
-                    // Cari admin berdasarkan ID
-                    const admin = allAdminData.find(a => a.cs_id === id);
-
-                    if (!admin) {
-                        console.error('❌ Data admin tidak ditemukan.');
-                        showPopupError('Data tidak ditemukan.');
-                        return;
-                    }
-
-                    // Set nilai ke form edit
-                    document.getElementById('admin_id').value = admin.cs_id;
-                    document.getElementById('edit_cs_admin').value = admin.cs_admin;
-                    document.getElementById('edit_phone').value = admin.phone;
-
-                    console.log('✅ Data admin berhasil di-load ke form:', admin);
-                    openModal('modalEdit');
-                }
-
-                // Event listener untuk form submit
                 document.getElementById('editAdminForm').addEventListener('submit', async function (e) {
                     e.preventDefault();
-
                     const id = document.getElementById('admin_id').value;
                     const csAdmin = document.getElementById('edit_cs_admin').value.trim();
                     let phone = document.getElementById('edit_phone').value.trim().replace(/\D/g, '');
-
-                    console.log('🔄 Submit Edit dengan ID:', id);
-                    console.log('🔄 Data yang dikirim:', { cs_admin: csAdmin, phone });
 
                     if (!csAdmin || !phone) {
                         showPopupError('Nama dan nomor WhatsApp wajib diisi.');
@@ -759,31 +686,62 @@
                             })
                         });
 
+                        const result = await response.json();
+
                         if (response.ok) {
                             showPopupSuccess('Data berhasil diperbarui!');
-
-                            // Update data di array langsung
                             const index = allAdminData.findIndex(a => a.cs_id == id);
                             if (index !== -1) {
                                 allAdminData[index].cs_admin = csAdmin;
                                 allAdminData[index].phone = phone;
                             }
-
-                            // Render ulang tabel
+                            filteredData = [...allAdminData];
+                            closeModal('modalEdit');
                             renderTablePage();
                             renderPagination();
-
-                            // Tutup modal
-                            closeModal('modalEdit');
                         } else {
-                            const result = await response.json();
                             showPopupError(result.message || 'Gagal memperbarui data.');
                         }
                     } catch (error) {
-                        console.error('❌ Error saat PUT request:', error.message);
-                        showPopupError('Terjadi kesalahan saat memperbarui data.');
+                        console.error('Error saat update:', error);
+                        showPopupError('Terjadi kesalahan saat mengupdate data.');
                     }
                 });
+
+                function editAdmin(id) {
+                    const admin = allAdminData.find(a => a.cs_id === id);
+                    if (!admin) return showPopupError('Data tidak ditemukan.');
+                    document.getElementById('admin_id').value = admin.cs_id;
+                    document.getElementById('edit_cs_admin').value = admin.cs_admin;
+                    document.getElementById('edit_phone').value = admin.phone;
+                    openModal('modalEdit');
+                }
+
+                // Auto sanitize input number
+                document.querySelectorAll('#phone, #edit_phone').forEach(input => {
+                    input.addEventListener('input', function () {
+                        this.value = this.value.replace(/\D/g, '').slice(0, 13);
+                    });
+                });
+
+                const searchInput = document.querySelector('input[placeholder="Cari Data Produk"]');
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.trim().toLowerCase();
+                    const tableBody = document.getElementById('adminTableBody');
+                    tableBody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-gray-400">Memfilter data...</td></tr>`;
+
+                    setTimeout(() => {
+                        filteredData = allAdminData.filter(admin =>
+                            admin.cs_admin?.toLowerCase().includes(query) ||
+                            admin.phone?.toLowerCase().includes(query)
+                        );
+                        currentPage = 1;
+                        renderTablePage();
+                        renderPagination();
+                    }, 300);
+                });
+
+                fetchAdminData();
 
                 async function deleteAdmin(id) {
                     // Cari data admin berdasarkan ID
