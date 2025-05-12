@@ -487,168 +487,141 @@
             </svg>
         </div>
 
-
-        <!-- Script Animasi Modal -->
         <script>
+            <!-- Script Animasi Modal -->
+            // JavaScript for managing pretext data with CRUD, search, and pagination
             let allpretextData = [];
+            let filteredpretextData = [];
             let currentPage = 1;
-            const pageSize = 5;
+            const pageSize = 10;
 
             async function fetchpretextData() {
+                let page = 1;
+                let hasMore = true;
+                allpretextData = [];
+
                 try {
-                    const response = await fetch('https://dev.katib.cloud/table/pretextwago/4409/1', {
-                        headers: {
-                            'Authorization': 'Bearer DpacnJf3uEQeM7HN'
-                        }
-                    });
+                    while (hasMore) {
+                        const response = await fetch(`https://dev.katib.cloud/table/pretextwago/4409/${page}`, {
+                            headers: { 'Authorization': 'Bearer DpacnJf3uEQeM7HN' }
+                        });
 
-                    if (!response.ok) throw new Error(`Failed to fetch data: ${response.statusText}`);
+                        if (!response.ok) throw new Error(`Gagal mengambil halaman ${page}: ${response.statusText}`);
 
-                    const result = await response.json();
-                    if (result && result.tableData) {
-                        allpretextData = result.tableData;
-                        currentPage = 1;
-                        renderTablePage();
-                        renderPagination(allpretextData);
-                    } else {
-                        throw new Error('Data structure is invalid or missing tableData');
+                        const result = await response.json();
+                        if (result.tableData && result.tableData.length > 0) {
+                            allpretextData.push(...result.tableData);
+                            if (result.tableData.length < 10) { hasMore = false; } else { page++; }
+                        } else { hasMore = false; }
                     }
+                    filteredpretextData = allpretextData; currentPage = 1; renderTablePage(); renderPagination(filteredpretextData);
                 } catch (error) {
                     console.error('Error fetching data:', error);
-                    document.getElementById('pretextTableBody').innerHTML = `
-                        <tr><td colspan="6" class="text-center py-4 text-red-500">Failed to load data</td></tr>
-                    `;
+                    document.getElementById('pretextTableBody').innerHTML = ` <tr>
+            <td colspan="6" class="text-center py-4 text-red-500">Failed to load data</td>
+            </tr>`;
                 }
             }
 
+
+
             function renderTablePage() {
                 const tableBody = document.getElementById('pretextTableBody');
-                tableBody.innerHTML = '';  // Clear table content
-
-                const totalPages = Math.ceil(allpretextData.length / pageSize);
+                tableBody.innerHTML = '';
                 const start = (currentPage - 1) * pageSize;
                 const end = start + pageSize;
-                const currentData = allpretextData.slice(start, end);
+                const currentData = filteredpretextData.slice(start, end);
 
-                // Tampilkan spinner di kolom saat loading
                 if (currentData.length === 0) {
                     tableBody.innerHTML = `
             <tr>
                 <td colspan="5" class="text-center py-4">
                     <div class="flex justify-center items-center space-x-2">
-                        <!-- Spinner animation -->
-                        <div class="w-8 h-8 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+                        <div class="w-8 h-8 border-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin">
+                        </div>
                         <span class="text-gray-500">Loading...</span>
                     </div>
                 </td>
-            </tr>
-            `;
-                }
-
-                if (currentData.length > 0) {
+            </tr>`;
+                } else {
                     currentData.forEach((pretext, index) => {
-                        const row = `
-                <tr class="border-b hover:bg-gray-100 transition">
-                    <td class="py-3 px-6 text-center font-normal">${start + index + 1}</td>
-                    <td class="py-3 px-6 text-left font-normal">${pretext.description}</td>
-                    <td class="py-3 px-6 text-left font-normal">${pretext.text}</td>
-                    <td class="py-3 px-6 text-center font-normal">${pretext.status}</td>
-                    <td class="py-3 px-6 text-center font-normal">
-                        <button class="text-blue-500 hover:underline mr-2" onclick="editpretext(${pretext.text_id})">Edit</button>
-                        <button class="text-red-500 hover:underline" onclick="deletepretext(${pretext.text_id})">Delete</button>
-                    </td>
-                </tr>
-            `;
-                        tableBody.insertAdjacentHTML('beforeend', row);
+                        tableBody.insertAdjacentHTML('beforeend', `
+            <tr class="border-b hover:bg-gray-100 transition">
+                <td class="py-3 px-6 text-center">${start + index + 1}</td>
+                <td class="py-3 px-6 text-left">${pretext.description}</td>
+                <td class="py-3 px-6 text-left">${pretext.text}</td>
+                <td class="py-3 px-6 text-center">${pretext.status}</td>
+                <td class="py-3 px-6 text-center">
+                    <button class="text-blue-500 hover:underline mr-2"
+                        onclick="editpretext(${pretext.text_id})">Edit</button>
+                    <button class="text-red-500 hover:underline"
+                        onclick="deletepretext(${pretext.text_id})">Delete</button>
+                </td>
+            </tr>`);
                     });
-                } else {
-                    tableBody.innerHTML = '';
                 }
-
-                document.getElementById('totalData').textContent = allpretextData.length;
+                document.getElementById('totalData').textContent = filteredpretextData.length;
             }
 
+            function renderPagination(data) {
+                const container = document.getElementById('paginationControls');
+                container.innerHTML = '';
+                const totalPages = Math.ceil(data.length / pageSize);
 
-            function renderFilteredTable(filteredData) {
-                const tableBody = document.getElementById('pretextTableBody');
-                tableBody.innerHTML = ''; // Clear table
+                const createButton = (text, disabled, onClick, active = false) => {
+                    const btn = document.createElement('button');
+                    btn.innerText = text;
+                    btn.disabled = disabled;
+                    btn.className = `px-3 py-1 border rounded ${active ? 'bg-teal-600 text-white' : 'hover:bg-gray-100'}`;
+                    btn.onclick = onClick;
+                    return btn;
+                };
 
-                if (filteredData.length > 0) {
-                    filteredData.forEach((pretext, index) => {
-                        const row = `
-                            <tr class="border-b hover:bg-gray-100 transition">
-                                <td class="py-3 px-6 text-center font-normal">${index + 1}</td>
-                                <td class="py-3 px-6 text-left font-normal">${pretext.description}</td>
-                                <td class="py-3 px-6 text-left font-normal">${pretext.text}</td>
-                                <td class="py-3 px-6 text-center font-normal">${pretext.status}</td>
-                                <td class="py-3 px-6 text-center font-normal">
-                                    <button class="text-blue-500 hover:underline mr-2" onclick="editpretext(${pretext.text_id})">Edit</button>
-                                    <button class="text-red-500 hover:underline" onclick="deletepretext(${pretext.text_id})">Delete</button>
-                                </td>
-                            </tr>
-                        `;
-                        tableBody.insertAdjacentHTML('beforeend', row);
-                    });
-                } else {
-                    tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">No data available</td></tr>';
-                }
-
-                document.getElementById('totalData').textContent = filteredData.length;
-            }
-
-            function renderPagination(filteredData) {
-                const paginationContainer = document.getElementById('paginationControls');
-                paginationContainer.innerHTML = ''; // Clear pagination
-                const totalPages = Math.ceil(filteredData.length / pageSize);
-
-                // Previous button
-                const prevBtn = document.createElement('button');
-                prevBtn.innerText = 'Prev';
-                prevBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100';
-                prevBtn.disabled = currentPage === 1;
-                prevBtn.onclick = () => {
+                container.appendChild(createButton('Prev', currentPage === 1, () => {
                     currentPage--;
-                    renderFilteredTable(filteredData);
-                    renderPagination(filteredData);
-                };
-                paginationContainer.appendChild(prevBtn);
+                    renderTablePage();
+                    renderPagination(data);
+                }));
 
-                // Page buttons
                 for (let i = 1; i <= totalPages; i++) {
-                    const pageBtn = document.createElement('button');
-                    pageBtn.innerText = i;
-                    pageBtn.className = `px-3 py-1 border rounded ${i === currentPage ? 'bg-teal-600 text-white' : 'hover:bg-gray-100'}`;
-                    pageBtn.onclick = () => {
+                    container.appendChild(createButton(i, false, () => {
                         currentPage = i;
-                        renderFilteredTable(filteredData);
-                        renderPagination(filteredData);
-                    };
-                    paginationContainer.appendChild(pageBtn);
+                        renderTablePage();
+                        renderPagination(data);
+                    }, i === currentPage));
                 }
 
-                // Next button
-                const nextBtn = document.createElement('button');
-                nextBtn.innerText = 'Next';
-                nextBtn.className = 'px-3 py-1 border rounded hover:bg-gray-100';
-                nextBtn.disabled = currentPage === totalPages;
-                nextBtn.onclick = () => {
+                container.appendChild(createButton('Next', currentPage === totalPages, () => {
                     currentPage++;
-                    renderFilteredTable(filteredData);
-                    renderPagination(filteredData);
-                };
-                paginationContainer.appendChild(nextBtn);
+                    renderTablePage();
+                    renderPagination(data);
+                }));
             }
+
+            document.getElementById('searchInput').addEventListener('input', function () {
+                const query = this.value.toLowerCase();
+                document.getElementById('pretextTableBody').innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-4">Mencari data...</td>
+                </tr>`;
+
+                setTimeout(() => {
+                    filteredpretextData = allpretextData.filter(p =>
+                        p.description.toLowerCase().includes(query) ||
+                        p.text.toLowerCase().includes(query)
+                    );
+                    currentPage = 1;
+                    renderTablePage();
+                    renderPagination(filteredpretextData);
+                }, 300);
+            });
 
             document.getElementById('createPretextForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
-
                 const description = document.getElementById('create_description').value.trim();
                 const text = document.getElementById('create_text').value.trim();
 
-                if (!description || !text) {
-                    showPopupError('Semua kolom wajib diisi.');
-                    return;
-                }
+                if (!description || !text) return showPopupError('Semua kolom wajib diisi.');
 
                 try {
                     const response = await fetch('https://dev.katib.cloud/add/pretextwago/', {
@@ -657,88 +630,38 @@
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer DpacnJf3uEQeM7HN'
                         },
-                        body: JSON.stringify({
-                            owner_id: 4409,
-                            description,
-                            text,
-                        })
+                        body: JSON.stringify({ owner_id: 4409, description, text })
                     });
 
                     const result = await response.json();
-
                     if (response.ok) {
                         showPopupSuccess('Data berhasil disimpan!');
-                        fetchpretextData(); // Reload data
+                        fetchpretextData();
                         closeModal('modalCreate');
                     } else {
                         showPopupError(result.message || 'Terjadi kesalahan.');
                     }
                 } catch (error) {
-                    console.error('Error:', error);
+                    console.error('Create error:', error);
                     showPopupError('Terjadi kesalahan saat menyimpan data.');
                 }
             });
 
-            document.getElementById('searchInput').addEventListener('input', function () {
-                const query = this.value.toLowerCase();
-                const tableBody = document.getElementById('pretextTableBody');
-
-                // Tampilkan loader di dalam tabel
-                tableBody.innerHTML = `
-        <tr>
-            <td colspan="6" class="text-center py-4">
-                <div class="flex justify-center items-center space-x-2">
-                    <div class="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span class="text-gray-500">Mencari data...</span>
-                </div>
-            </td>
-        </tr>
-    `;
-
-                // Delay render filter supaya animasi muncul
-                setTimeout(() => {
-                    const filteredData = allpretextData.filter(pretext =>
-                        pretext.description.toLowerCase().includes(query) ||
-                        pretext.text.toLowerCase().includes(query)
-                    );
-
-                    renderFilteredTable(filteredData);
-                    renderPagination(filteredData);
-                }, 300);
-            });
-
-
-
-
             function editpretext(id) {
-                const pretext = allpretextData.find(item => item.text_id === id);
-
-                if (!pretext) {
-                    console.error('❌ Data tidak ditemukan.');
-                    showPopupError('Data tidak ditemukan.');
-                    return;
-                }
-
-                // Populate form
-                document.getElementById('Pretext_id').value = pretext.text_id;
-                document.getElementById('edit_description').value = pretext.description;
-                document.getElementById('edit_text').value = pretext.text;
-
+                const data = allpretextData.find(p => p.text_id === id);
+                if (!data) return showPopupError('Data tidak ditemukan.');
+                document.getElementById('Pretext_id').value = data.text_id;
+                document.getElementById('edit_description').value = data.description;
+                document.getElementById('edit_text').value = data.text;
                 openModal('modalEdit');
             }
 
-            // Event submit for edit form
             document.getElementById('editPretextForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
-
                 const id = document.getElementById('Pretext_id').value;
                 const description = document.getElementById('edit_description').value.trim();
                 const text = document.getElementById('edit_text').value.trim();
-
-                if (!description || !text) {
-                    showPopupError('Semua kolom wajib diisi.');
-                    return;
-                }
+                if (!description || !text) return showPopupError('Semua kolom wajib diisi.');
 
                 try {
                     const response = await fetch(`https://dev.katib.cloud/update/pretextwago/${id}`, {
@@ -747,56 +670,39 @@
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer DpacnJf3uEQeM7HN'
                         },
-                        body: JSON.stringify({
-                            owner_id: 4409,
-                            description,
-                            text,
-                        })
+                        body: JSON.stringify({ owner_id: 4409, description, text })
                     });
 
                     const result = await response.json();
-
                     if (response.ok) {
                         showPopupSuccess('Data berhasil diperbarui!');
-                        fetchpretextData(); // Reload data
+                        fetchpretextData();
                         closeModal('modalEdit');
                     } else {
                         showPopupError(result.message || 'Gagal memperbarui data.');
                     }
                 } catch (error) {
-                    console.error('❌ Error saat update:', error);
+                    console.error('Update error:', error);
                     showPopupError('Terjadi kesalahan saat memperbarui data.');
                 }
             });
 
             async function deletepretext(id) {
-                const pretext = allpretextData.find(item => item.text_id === id);
-
-                if (!pretext) {
-                    showPopupError("Data tidak ditemukan.");
-                    return;
-                }
+                const data = allpretextData.find(p => p.text_id === id);
+                if (!data) return showPopupError('Data tidak ditemukan.');
 
                 const confirmation = await Swal.fire({
-                    title: "Hapus Data?",
-                    text: `Apakah Anda yakin ingin menghapus data pretext: ${pretext.description}?`,
-                    icon: "warning",
+                    title: 'Hapus Data?',
+                    text: `Hapus data pretext: ${data.description}?`,
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Hapus",
-                    cancelButtonText: "Batal"
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal'
                 });
 
-                if (!confirmation.isConfirmed) {
-                    return;
-                }
-
-                const deleteData = {
-                    owner_id: 4409,
-                    description: pretext.description,
-                    text: pretext.text,
-                };
+                if (!confirmation.isConfirmed) return;
 
                 try {
                     const response = await fetch(`https://dev.katib.cloud/delete/pretextwago/${id}`, {
@@ -805,21 +711,22 @@
                             'Content-Type': 'application/json',
                             'Authorization': 'Bearer DpacnJf3uEQeM7HN'
                         },
-                        body: JSON.stringify(deleteData)
+                        body: JSON.stringify({ owner_id: 4409, description: data.description, text: data.text })
                     });
 
                     if (response.ok) {
-                        showPopupSuccess("Data berhasil dihapus!");
-                        allpretextData = allpretextData.filter(pretext => pretext.text_id !== id);
+                        showPopupSuccess('Data berhasil dihapus!');
+                        allpretextData = allpretextData.filter(p => p.text_id !== id);
+                        filteredpretextData = allpretextData;
                         renderTablePage();
-                        renderPagination(allpretextData);
+                        renderPagination(filteredpretextData);
                     } else {
                         const result = await response.json();
-                        showPopupError(result.message || "Gagal menghapus data.");
+                        showPopupError(result.message || 'Gagal menghapus data.');
                     }
                 } catch (error) {
-                    console.error("❌ Error saat menghapus data:", error.message);
-                    showPopupError("Terjadi kesalahan saat menghapus data.");
+                    console.error('Delete error:', error);
+                    showPopupError('Terjadi kesalahan saat menghapus data.');
                 }
             }
 
@@ -842,21 +749,11 @@
             }
 
             function showPopupSuccess(message) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: message,
-                    confirmButtonColor: '#6366f1'
-                });
+                Swal.fire({ icon: 'success', title: 'Success', text: message, confirmButtonColor: '#6366f1' });
             }
 
             function showPopupError(message) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed',
-                    text: message,
-                    confirmButtonColor: '#6366f1'
-                });
+                Swal.fire({ icon: 'error', title: 'Failed', text: message, confirmButtonColor: '#6366f1' });
             }
 
             window.onload = fetchpretextData;
