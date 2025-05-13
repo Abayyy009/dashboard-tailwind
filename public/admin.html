@@ -647,16 +647,17 @@
                             if (result && result.data) {
                                 allAdminData.push(result.data);
                                 filteredData = [...allAdminData];
-                                currentPage = Math.ceil(allAdminData.length / pageSize);
+                                currentPage = Math.ceil(filteredData.length / pageSize);
+                                renderTablePage(); // <== Tambahkan render setelah data ditambahkan
+                                renderPagination();
                             } else {
-                                await fetchAdminData();
+                                await fetchAdminData(); // fallback kalau tidak ada result.data
                             }
                             closeModal('modalCreate');
-                            renderTablePage();
-                            renderPagination();
                         } else {
                             showPopupError(result.message || 'Terjadi kesalahan.');
                         }
+
                     } catch (error) {
                         console.error('Error:', error);
                         showPopupError('Terjadi kesalahan saat mengirim data.');
@@ -696,19 +697,24 @@
                         const result = await response.json();
 
                         if (response.ok) {
-                            showPopupSuccess('Data berhasil diperbarui!');
-                            const index = allAdminData.findIndex(a => a.cs_id == id);
-                            if (index !== -1) {
-                                allAdminData[index].cs_admin = csAdmin;
-                                allAdminData[index].phone = phone;
+                            showPopupSuccess("Data berhasil diperbarui!");
+
+                            // Update data di array allAdminData
+                            const index = allAdminData.findIndex((admin) => admin.cs_id === id);
+                            if (index !== -1 && result.data) {
+                                allAdminData[index] = result.data; // Ganti dengan data terbaru
+                                filteredData = [...allAdminData];
+                                renderTablePage();
+                                renderPagination();
+                            } else {
+                                await fetchAdminData(); // fallback kalau update gagal
                             }
-                            filteredData = [...allAdminData];
-                            closeModal('modalEdit');
-                            renderTablePage();
-                            renderPagination();
+
+                            closeModal("modalEdit");
                         } else {
-                            showPopupError(result.message || 'Gagal memperbarui data.');
+                            showPopupError(result.message || "Terjadi kesalahan saat memperbarui data.");
                         }
+
                     } catch (error) {
                         console.error('Error saat update:', error);
                         showPopupError('Terjadi kesalahan saat mengupdate data.');
@@ -841,8 +847,13 @@
 
                             // Hapus dari array frontend
                             allAdminData = allAdminData.filter(admin => admin.cs_id !== id);
+                            filteredData = filteredData.filter(admin => admin.cs_id !== id); // tambahkan ini
+                            // Perbaiki currentPage jika halaman saat ini kosong setelah delete
+                            const totalPages = Math.ceil(filteredData.length / pageSize);
+                            if (currentPage > totalPages) currentPage = totalPages > 0 ? totalPages : 1;
                             renderTablePage();
                             renderPagination();
+
                         } else {
                             const result = await response.json();
                             showPopupError(result.message || "Gagal menghapus data.");

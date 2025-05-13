@@ -405,7 +405,7 @@
                                 <div class="flex flex-col gap-4">
                                     <div class="bg-white p-4 rounded-lg shadow">
                                         <h2 class="text-lg font-semibold mb-6">Grafik Statistik Klik</h2>
-                                        <canvas id="clickStatisticsChart" height="200"></canvas>
+                                        <canvas id="statisticChart" height="200"></canvas>
                                     </div>
 
                                     <div class="bg-white p-4 rounded-lg shadow">
@@ -450,6 +450,15 @@
                             });
                             return;
                         }
+                        if (payload.phone.startsWith("0")) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Nomor Tidak Valid!',
+                                text: 'Nomor WhatsApp tidak boleh diawali dengan angka 0. Contohnya : 81234567890.',
+                            });
+                            return;
+                        }
+
 
                         const response = await fetch(API_ENDPOINT, {
                             method: "POST",
@@ -540,70 +549,75 @@
 
 
             <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const data = [
-                        { day: "Senin", cs_count: 5, click_count: 20 },
-                        { day: "Selasa", cs_count: 10, click_count: 30 },
-                        { day: "Rabu", cs_count: 15, click_count: 25 },
-                        { day: "Kamis", cs_count: 20, click_count: 35 },
-                        { day: "Jumat", cs_count: 25, click_count: 50 },
-                        { day: "Sabtu", cs_count: 30, click_count: 60 },
-                        { day: "Minggu", cs_count: 35, click_count: 70 },
-                    ];
+                const API_URL = "https://dev.katib.cloud/summary/dashboardwago/4409";
 
-                    const labels = data.map(item => item.day);
-                    const clickData = data.map(item => item.click_count);
-                    const csData = data.map(item => item.cs_count);
+                // Ambil data dari API
+                async function fetchChartData() {
+                    try {
+                        const response = await fetch(API_URL, {
+                            headers: {
+                                'Authorization': 'Bearer DpacnJf3uEQeM7HN',
+                                'Content-Type': 'application/json',
+                            }
+                        });
 
-                    // Grafik Statistik Klik
-                    const ctx1 = document.getElementById('clickStatisticsChart').getContext('2d');
-                    new Chart(ctx1, {
+                        if (!response.ok) {
+                            throw new Error("Gagal mengambil data dari API");
+                        }
+
+                        const { data } = await response.json();
+
+                        // Data untuk Grafik Statistik
+                        const statisticLabels = data.statistic_chart.labels;
+                        const statisticData = data.statistic_chart.data.map(Number);
+
+                        // Data untuk Grafik Konversi
+                        const conversionLabels = data.conversion_chart.labels;
+                        const conversionData = data.conversion_chart.data.map(Number);
+
+                        // Render Grafik
+                        renderChart('statisticChart', 'Statistik Klik', statisticLabels, statisticData, '#4F46E5');
+                        renderChart('conversionChart', 'Konversi', conversionLabels, conversionData, '#10B981');
+                    } catch (error) {
+                        console.error("Terjadi kesalahan:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal Memuat Grafik',
+                            text: 'Periksa koneksi atau coba lagi nanti.',
+                        });
+                    }
+                }
+
+                // Fungsi Render Chart
+                function renderChart(canvasId, label, labels, data, color) {
+                    const ctx = document.getElementById(canvasId).getContext('2d');
+                    new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Click Count',
-                                data: clickData,
-                                borderColor: '#4CAF50',
-                                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                                label: label,
+                                data: data,
+                                borderColor: color,
+                                backgroundColor: color + '33',
                                 fill: true,
+                                tension: 0.4,
                             }]
                         },
                         options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
                             scales: {
                                 y: {
                                     beginAtZero: true
                                 }
-                            }
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false,
                         }
                     });
+                }
 
-                    // Grafik Konversi
-                    const ctx2 = document.getElementById('conversionChart').getContext('2d');
-                    new Chart(ctx2, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'CS Count',
-                                data: csData,
-                                borderColor: '#2196F3',
-                                backgroundColor: 'rgba(33, 150, 243, 0.5)',
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                });
+                // Panggil fungsi fetch data
+                fetchChartData();
             </script>
 
 

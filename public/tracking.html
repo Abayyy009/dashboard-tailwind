@@ -576,15 +576,21 @@
                 }
 
                 function onSearchInput(e) {
-                    const keyword = e.target.value.toLowerCase();
-                    filteredTrackingData = allTrackingData.filter(item =>
-                        (item.description || '').toLowerCase().includes(keyword) ||
-                        (item.google_analytic_id || '').toLowerCase().includes(keyword) ||
-                        (item.tiktok_pixel_id || '').toLowerCase().includes(keyword) ||
-                        (item.meta_pixel_id || '').toLowerCase().includes(keyword) ||
-                        (item.google_spreadsheet_id || '').toLowerCase().includes(keyword) ||
-                        (item.status || '').toLowerCase().includes(keyword)
-                    );
+                    // Update ulang filteredTrackingData berdasarkan search (jika sedang aktif)
+                    const keyword = document.getElementById('searchInput').value.toLowerCase();
+                    if (keyword) {
+                        filteredTrackingData = allTrackingData.filter(item =>
+                            (item.description || '').toLowerCase().includes(keyword) ||
+                            (item.google_analytic_id || '').toLowerCase().includes(keyword) ||
+                            (item.tiktok_pixel_id || '').toLowerCase().includes(keyword) ||
+                            (item.meta_pixel_id || '').toLowerCase().includes(keyword) ||
+                            (item.google_spreadsheet_id || '').toLowerCase().includes(keyword) ||
+                            (item.status || '').toLowerCase().includes(keyword)
+                        );
+                    } else {
+                        filteredTrackingData = allTrackingData;
+                    }
+
                     currentPage = 1; // Reset halaman ke 1
                     renderTablePage();
                     renderPagination();
@@ -645,8 +651,8 @@
 
                     createBtn('Prev', currentPage === 1, () => {
                         currentPage--;
-                        fetchTrackingData();  // Memuat data sesuai halaman baru
-                        renderPagination();
+                        renderTablePage();      // ✅ tampilkan data
+                        renderPagination();     // ✅ perbarui pagination
                     });
 
                     for (let i = 1; i <= totalPages; i++) {
@@ -655,18 +661,19 @@
                         btn.className = `px-3 py-1 border rounded ${i === currentPage ? 'bg-teal-600 text-white' : 'hover:bg-gray-100'}`;
                         btn.onclick = () => {
                             currentPage = i;
-                            fetchTrackingData();  // Memuat data sesuai halaman baru
-                            renderPagination();
+                            renderTablePage();     // ✅ tampilkan data
+                            renderPagination();    // ✅ perbarui pagination
                         };
                         container.appendChild(btn);
                     }
 
                     createBtn('Next', currentPage === totalPages, () => {
                         currentPage++;
-                        fetchTrackingData();  // Memuat data sesuai halaman baru
-                        renderPagination();
+                        renderTablePage();      // ✅ tampilkan data
+                        renderPagination();     // ✅ perbarui pagination
                     });
                 }
+
 
                 document.getElementById('trackingForm').addEventListener('submit', async function (e) {
                     e.preventDefault();
@@ -771,6 +778,7 @@
 
 
                 // Fungsi untuk tombol Edit
+                // Fungsi untuk membuka modal edit
                 function openEditModal(data) {
                     console.log("Membuka modal dengan data:", data);
 
@@ -793,7 +801,6 @@
                     }, 10);
                 }
 
-
                 // Fungsi untuk form submit edit
                 document.getElementById("editTrackingForm").addEventListener("submit", function (e) {
                     e.preventDefault();
@@ -809,7 +816,6 @@
                         meta_pixel_id: document.getElementById("meta_pixel_id").value,
                         campaign_type: document.getElementById("campaign_type").value,
                         status: document.querySelector('input[name="status"]:checked').value
-
                     };
 
                     console.log("Payload yang akan dikirim:", payload);
@@ -828,16 +834,32 @@
                             return res.json();
                         })
                         .then(data => {
-                            console.log("Update berhasil, data:", data);
+                            const index = allTrackingData.findIndex(item => item.tool_id === parseInt(id));
+                            if (index !== -1) {
+                                allTrackingData[index] = {
+                                    ...allTrackingData[index],
+                                    ...payload
+                                };
+
+                                filteredTrackingData = allTrackingData.filter(item =>
+                                    (item.description || '').toLowerCase().includes(document.getElementById('searchInput').value.toLowerCase())
+                                );
+                            }
+
+                            renderTablePage();
+                            renderPagination();
+
                             showPopupSuccess("Data berhasil diperbarui!");
                             closeModal("modalEditTracking");
-                            fetchTrackingData(); // ⬅️ refresh tabel
                         })
+
+
                         .catch(err => {
                             console.error("Error saat update:", err);
                             showPopupError("Terjadi kesalahan saat mengupdate.");
                         });
                 });
+
 
                 async function deleteTracking(tool_id) {
                     // Cari data berdasarkan tool_id
@@ -883,18 +905,23 @@
 
                         if (response.ok) {
                             showPopupSuccess("Data tracking berhasil dihapus!");
+
+                            // Hapus dari allTrackingData
                             allTrackingData = allTrackingData.filter(t => t.tool_id !== tool_id);
 
-                            const totalPages = Math.ceil(allTrackingData.length / pageSize);
+                            // Hapus dari filteredTrackingData juga
+                            filteredTrackingData = filteredTrackingData.filter(t => t.tool_id !== tool_id);
+
+                            // Periksa ulang total halaman
+                            const totalPages = Math.ceil(filteredTrackingData.length / pageSize);
                             if (currentPage > totalPages) {
                                 currentPage = totalPages > 0 ? totalPages : 1;
                             }
 
                             renderTablePage();
                             renderPagination();
-                        } else {
-                            showPopupError(result.message || "Gagal menghapus data tracking.");
                         }
+
                     } catch (error) {
                         console.error("❌ Error saat menghapus:", error);
                         showPopupError("Terjadi kesalahan saat menghapus data.");

@@ -398,86 +398,52 @@
 
             <!-- Modal Tambah Data -->
             <div id="modalCreate"
-                class="fixed inset-0 bg-black bg-opacity-50 hidden  flex items-center justify-center  z-50">
+                class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
                 <div
                     class="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg relative transform transition-all duration-300 scale-95 opacity-0">
                     <button onclick="closeModal('modalCreate')"
                         class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                         ✕
                     </button>
-                    <h2 class="text-2xl font-semibold text-center mb-6">Create New Data</h2>
+                    <h2 class="text-2xl font-semibold text-center mb-6">Create New Campaign</h2>
                     <form id="createCampaignForm">
-                        <!-- Deskripsi -->
                         <div class="mb-4">
-                            <label for="create_description"
-                                class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                            <input type="text" id="create_description" name="description" placeholder="Enter Deskripsi"
+                            <label for="campaign_name" class="block text-sm font-medium text-gray-700 mb-1">Campaign
+                                Name</label>
+                            <input type="text" id="campaign_name" name="campaign_name" placeholder="Enter Campaign Name"
                                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required>
                         </div>
 
-                        <!-- Konten -->
                         <div class="mb-4">
-                            <label for="create_text" class="block text-sm font-medium text-gray-700 mb-1">Konten</label>
-                            <input type="text" id="create_text" name="text" placeholder="Content"
+                            <label for="pretext" class="block text-sm font-medium text-gray-700 mb-1">Pretext</label>
+                            <select id="pretextSelect" name="pretext"
                                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required>
+                                <option value="">-Select Pretext-</option>
+                            </select>
                         </div>
 
-
-                        <!-- Status  -->
-
-
-                        <!-- Buttons -->
-                        <div class="flex justify-center mt-6">
-                            <button type="submit"
-                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg mr-3 transition">
-                                Save
-                            </button>
-                            <button type="button" onclick="closeModal('modalCreate')"
-                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg transition">
-                                Cancel
-                            </button>
+                        <div class="mb-4">
+                            <label for="tracking" class="block text-sm font-medium text-gray-700 mb-1">Tracking</label>
+                            <select id="trackingSelect" name="tracking"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                                <option value="">-Select Tracking-</option>
+                            </select>
                         </div>
+
+                        <button type="submit"
+                            class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg mr-3 transition">
+                            Save
+                        </button>
                     </form>
+
                 </div>
             </div>
-            <!-- MODAL EDIT -->
-
-            <div id="modalEdit"
-                class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
-                <div
-                    class="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg relative transform transition-all duration-300 scale-95 opacity-0">
-                    <button onclick="closeModal('modalEdit')"
-                        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">✕</button>
-                    <h2 class="text-2xl font-semibold text-center mb-6">Edit Data Campaign</h2>
-                    <form id="editCampaignForm">
-                        <input type="hidden" id="Campaign_id">
-                        <div class="mb-4">
-                            <label for="edit_description"
-                                class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                            <input type="text" id="edit_description" name="edit_description"
-                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="edit_text" class="block text-sm font-medium text-gray-700 mb-1">Konten</label>
-                            <input type="text" id="edit_text" name="edit_text" placeholder="Content"
-                                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required>
-                        </div>
 
 
 
-                        <div class="flex justify-center mt-6">
-                            <button type="submit"
-                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg mr-3 transition">Update</button>
-                            <button type="button" onclick="closeModal('modalEdit')"
-                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg transition">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
         <!-- Tambahkan ke dalam file HTML (misalnya dekat akhir body atau dalam elemen tertentu) -->
         <div id="searchLoader" class="flex justify-center py-4 hidden">
@@ -605,6 +571,144 @@
                 paginationContainer.appendChild(nextBtn);
             }
 
+            // Fungsi untuk fetch data dari endpoint dengan logging dan validasi
+            // Script JavaScript
+            async function fetchData() {
+                const pretextSelect = document.getElementById("pretextSelect");
+                const trackingSelect = document.getElementById("trackingSelect");
+
+                const headers = {
+                    'Authorization': 'Bearer DpacnJf3uEQeM7HN'
+                };
+
+                try {
+                    // --- Fetch Pretext ---
+                    const pretextRes = await fetch('https://dev.katib.cloud/list/pretextwago/4409', { headers });
+                    if (!pretextRes.ok) throw new Error(`Pretext fetch error: ${pretextRes.status}`);
+
+                    const pretextJson = await pretextRes.json();
+                    const pretextData = pretextJson.listData;
+
+                    if (Array.isArray(pretextData)) {
+                        pretextData.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.text_id;
+                            option.text = item.description;
+                            pretextSelect.appendChild(option);
+                        });
+                    } else {
+                        console.warn("Pretext data bukan array:", pretextData);
+                    }
+
+                    // --- Fetch Tracking ---
+                    const trackingRes = await fetch('https://dev.katib.cloud/list/trackingwago/4409', { headers });
+                    if (!trackingRes.ok) throw new Error(`Tracking fetch error: ${trackingRes.status}`);
+
+                    const trackingJson = await trackingRes.json();
+                    const trackingData = trackingJson.listData;
+
+                    if (Array.isArray(trackingData)) {
+                        trackingData.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.tool_id;
+                            option.text = item.description;
+                            trackingSelect.appendChild(option);
+                        });
+                    } else {
+                        console.warn("Tracking data bukan array:", trackingData);
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching dropdown data:", error);
+                }
+            }
+
+            fetchData();
+
+
+
+
+
+            // Submit Campaign
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('createCampaignForm');
+
+                if (!form) {
+                    console.error("Form #createCampaignForm tidak ditemukan.");
+                    return;
+                }
+
+                form.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    const campaignInput = document.getElementById('campaign_name');
+                    const pretextSelect = document.getElementById('pretextSelect');
+                    const trackingSelect = document.getElementById('trackingSelect');
+
+
+                    if (!campaignInput || !pretextSelect || !trackingSelect) {
+                        alert("Form tidak lengkap atau elemen tidak ditemukan di DOM.");
+                        return;
+                    }
+
+                    const campaignName = campaignInput.value.trim();
+                    const pretextId = pretextSelect.value;
+                    const trackingId = trackingSelect.value;
+
+                    // Validasi input
+                    if (!campaignName || !pretextId || !trackingId) {
+                        alert("Mohon lengkapi semua data terlebih dahulu.");
+                        return;
+                    }
+
+                    const data = {
+                        owner_id: 4409,
+                        tool_id: trackingId,
+                        text_id: pretextId,
+                        campaign_name: campaignName
+                    };
+
+                    console.log("Data to submit:", data);
+
+                    try {
+                        const response = await fetch('https://dev.katib.cloud/add/campaignwago', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer DpacnJf3uEQeM7HN'
+                            },
+                            body: JSON.stringify(data)
+                        });
+
+                        const result = await response.json();
+                        console.log("API Response:", result);
+
+                        if (response.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: 'Campaign berhasil dibuat.',
+                                confirmButtonColor: '#4F46E5'
+                            }).then(() => {
+                                closeModal('modalCreate');
+                                fetchCampaignData();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: 'Terjadi kesalahan saat menyimpan data.',
+                            });
+                        }
+
+                    } catch (error) {
+                        console.error("Error submitting data:", error);
+                        alert("Gagal mengirim data. Silakan coba lagi.");
+                    }
+                });
+            });
+
+
             function openModal(id) {
                 const modal = document.getElementById(id);
                 modal.classList.remove('hidden');
@@ -644,6 +748,7 @@
             }
 
             fetchCampaignData();
+
         </script>
 
 

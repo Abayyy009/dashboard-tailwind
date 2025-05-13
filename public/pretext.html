@@ -513,8 +513,8 @@
                             allpretextData.push(...result.tableData);
                             if (result.tableData.length < 10) { hasMore = false; } else { page++; }
                         } else { hasMore = false; }
-                    }
-                    filteredpretextData = allpretextData; currentPage = 1; renderTablePage(); renderPagination(filteredpretextData);
+                    } filteredpretextData = [...allpretextData]; currentPage = 1; renderTablePage();
+                    renderPagination(filteredpretextData);
                 } catch (error) {
                     console.error('Error fetching data:', error);
                     document.getElementById('pretextTableBody').innerHTML = ` <tr>
@@ -636,19 +636,21 @@
                     const result = await response.json();
                     if (response.ok) {
                         showPopupSuccess('Data berhasil disimpan!');
-                        fetchpretextData();
-                        closeModal('modalCreate');
+                        await fetchpretextData();
+                        renderTablePage();
+                        renderPagination(filteredpretextData);
+                        closeModal('modalEdit'); closeModal('modalCreate');
                     } else {
-                        showPopupError(result.message || 'Terjadi kesalahan.');
+                        showPopupError(result.message
+                            || 'Terjadi kesalahan.');
                     }
                 } catch (error) {
                     console.error('Create error:', error);
                     showPopupError('Terjadi kesalahan saat menyimpan data.');
                 }
-            });
-
-            function editpretext(id) {
-                const data = allpretextData.find(p => p.text_id === id);
+            }); function editpretext(id) {
+                const
+                    data = allpretextData.find(p => p.text_id === id);
                 if (!data) return showPopupError('Data tidak ditemukan.');
                 document.getElementById('Pretext_id').value = data.text_id;
                 document.getElementById('edit_description').value = data.description;
@@ -676,7 +678,9 @@
                     const result = await response.json();
                     if (response.ok) {
                         showPopupSuccess('Data berhasil diperbarui!');
-                        fetchpretextData();
+                        await fetchpretextData();
+                        renderTablePage();
+                        renderPagination(filteredpretextData);
                         closeModal('modalEdit');
                     } else {
                         showPopupError(result.message || 'Gagal memperbarui data.');
@@ -717,7 +721,7 @@
                     if (response.ok) {
                         showPopupSuccess('Data berhasil dihapus!');
                         allpretextData = allpretextData.filter(p => p.text_id !== id);
-                        filteredpretextData = allpretextData;
+                        filteredpretextData = [...allpretextData];
                         renderTablePage();
                         renderPagination(filteredpretextData);
                     } else {
