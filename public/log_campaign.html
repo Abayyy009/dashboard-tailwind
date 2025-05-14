@@ -158,7 +158,7 @@
                     </li>
                     <li class="relative px-6 py-3">
                         <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="cards.html">
+                            href="tracking.html">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M9 20l-5.447-2.724A2 2 0 013 15.382V6a2 2 0 012-2h14a2 2 0 012 2v9.382a2 2 0 01-1.553 1.894L15 20V10l-3 3-3-3v10z" />
@@ -168,7 +168,7 @@
                     </li>
                     <li class="relative px-6 py-3">
                         <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="charts.html">
+                            href="pretext.html">
                             <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                 <path
@@ -180,7 +180,7 @@
                     </li>
                     <li class="relative px-6 py-3">
                         <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="buttons.html">
+                            href="campaign.html">
                             <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                 <path
@@ -192,7 +192,7 @@
                     </li>
                     <li class="relative px-6 py-3">
                         <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="modals.html">
+                            href="addons.html">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.518 4.674a1 1 0 00.95.69h4.918c.969 0 1.371 1.24.588 1.81l-3.977 2.89a1 1 0 00-.364 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.977-2.89a1 1 0 00-1.176 0l-3.977 2.89c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.977-2.89c-.783-.57-.38-1.81.588-1.81h4.918a1 1 0 00.95-.69l1.518-4.674z" />
@@ -202,7 +202,7 @@
                     </li>
                     <li class="relative px-6 py-3">
                         <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="modals.html">
+                            href="setting.html">
                             <svg class="w-4 h-4 mr-3" aria-hidden="true" fill="none" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                 <path
@@ -358,21 +358,19 @@
                             </p>
                             <p class="mt-2">Berikut adalah log history data Click.</p>
                         </div>
-                        <!-- Log Button -->
                         <a id="editButton"
-                            class="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm">
+                            class="mt-4 md:mt-0 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm">
                             🔒 Detail
                         </a>
-
-
                     </div>
+
                 </div>
                 <!-- Link & Stats Card -->
 
 
                 <!-- Search -->
                 <!-- <div class="flex justify-end mb-3">
-                    <input  type="text" placeholder="Cari Data Produk"
+                    <input type="text" placeholder="Cari Data Produk"
                         class="border border-gray-300 px-3 py-2 rounded w-full md:w-64" />
                 </div> -->
 
@@ -385,7 +383,7 @@
                                 <th class="px-4 py-2 border">Timestamp</th>
                                 <th class="px-4 py-2 border">Admin</th>
                                 <th class="px-4 py-2 border">CTA</th>
-                                <th class="px-4 py-2 border">Status</th>
+
                             </tr>
                         </thead>
                         <tbody id="log-table-body">
@@ -515,7 +513,6 @@
         renderLogTable(allLogData);
 
         // Event listener pencarian
-        document.getElementById('logSearchInput').addEventListener('input', handleLogSearch);
 
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
