@@ -371,7 +371,7 @@
 
 
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+                <!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
                     <div class="bg-white rounded-lg shadow p-4 text-center">
                         <div class="text-2xl mb-2">👤</div>
                         <p class="text-sm">Admin</p>
@@ -392,7 +392,7 @@
                         <p class="text-sm">Purchase</p>
                         <p class="text-xl font-bold">50</p>
                     </div>
-                </div>
+                </div> -->
                 <div class="flex justify-between items-center mb-4">
                     <button onclick="openModal('modalCreate')"
                         class="mt-4 bg-white text-teal-600 px-4 py-2 rounded shadow hover:bg-gray-100 text-sm font-medium">
@@ -734,19 +734,6 @@
 
             document.addEventListener('DOMContentLoaded', loadCampaignData);
 
-            document.getElementById("logButton").addEventListener("click", () => {
-                const campaignId = new URLSearchParams(window.location.search).get("id");
-
-                if (campaignId) {
-                    window.location.href = `log.html?id=${campaignId}`;
-                } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Oops...',
-                        text: 'ID Campaign tidak ditemukan di URL!'
-                    });
-                }
-            });
 
             const allCampaignData = []; // Global untuk simpan semua data
 
@@ -836,6 +823,25 @@
                     }
                 }, 200); // Delay ringan untuk UX
             });
+            document.addEventListener('DOMContentLoaded', () => {
+                const logButton = document.getElementById('logButton');
+
+                // Ambil campaign_id dari URL sekarang
+                const urlParams = new URLSearchParams(window.location.search);
+                const campaign_id = urlParams.get('id');
+
+                // Debugging
+                console.log("Dari tombol log: campaign_id =", campaign_id);
+
+                if (campaign_id) {
+                    // Tambahkan parameter campaign_id ke href tombol Log
+                    logButton.href = `log_campaign.html?id=${campaign_id}`;
+                }
+            });
+            const urlParams = new URLSearchParams(window.location.search);
+            const campaign_id = urlParams.get('id');
+            console.log("✅ campaign_id dari URL:", campaign_id); // Harusnya bukan null
+
 
         </script>
 
