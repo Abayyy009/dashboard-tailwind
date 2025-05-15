@@ -387,24 +387,26 @@
 
                     <!-- Tabel tracking-->
                     <div class="w-full overflow-hidden rounded-lg shadow-xs">
-                        <table class="min-w-full w-full table-auto">
-                            <thead>
-                                <tr
-                                    class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-teal-50 dark:text-gray-400 dark:bg-gray-800">
-                                    <th class="py-3 px-6 text-center">No.</th>
-                                    <th class="py-3 px-6 text-center">Dekripsi</th>
-                                    <th class="py-3 px-6 text-center">PreText</th>
-                                    <th class="py-3 px-6 text-center">Status</th>
-                                    <th class="py-3 px-6 text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
-                                id="pretextTableBody">
-                                <tr class="text-gray-700 dark:text-gray-400">
-                                    <td colspan="5" class="text-center py-4 text-gray-500">Loading...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="w-full overflow-x-auto">
+                            <table class="min-w-full w-full table-auto">
+                                <thead>
+                                    <tr
+                                        class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-teal-50 dark:text-gray-400 dark:bg-gray-800">
+                                        <th class="py-3 px-6 text-center">No.</th>
+                                        <th class="py-3 px-6 text-center">Dekripsi</th>
+                                        <th class="py-3 px-6 text-center">PreText</th>
+                                        <th class="py-3 px-6 text-center">Status</th>
+                                        <th class="py-3 px-6 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+                                    id="pretextTableBody">
+                                    <tr class="text-gray-700 dark:text-gray-400">
+                                        <td colspan="5" class="text-center py-4 text-gray-500">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- Footer Info -->

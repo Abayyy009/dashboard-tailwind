@@ -414,22 +414,24 @@
                     <!-- Table -->
                     <!-- Table -->
                     <div class="w-full overflow-hidden rounded-lg shadow-xs">
-                        <table class="w-full whitespace-no-wrap bg-gray-500">
-                            <thead>
-                                <tr
-                                    class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-teal-50 dark:text-gray-400 dark:bg-gray-800">
-                                    <th class="px-4 py-3 text-left">No.</th>
-                                    <th class="px-4 py-3 text-left">Admin</th>
-                                    <th class="px-4 py-3 text-left">CTA</th>
-                                    <th class="px-4 py-3 text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="table-body">
-                                <tr class="text-gray-700 dark:text-gray-400">
-                                    <td class="text-center py-4 text-gray-500" colspan="4">Loading data...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="w-full overflow-x-auto">
+                            <table class="w-full whitespace-no-wrap bg-gray-500">
+                                <thead>
+                                    <tr
+                                        class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-teal-50 dark:text-gray-400 dark:bg-gray-800">
+                                        <th class="px-4 py-3 text-left">No.</th>
+                                        <th class="px-4 py-3 text-left">Admin</th>
+                                        <th class="px-4 py-3 text-left">CTA</th>
+                                        <th class="px-4 py-3 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="table-body">
+                                    <tr class="text-gray-700 dark:text-gray-400">
+                                        <td class="text-center py-4 text-gray-500" colspan="4">Loading data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <p class="text-sm mt-2" id="pagination">Loading pagination...</p>
                 </div>

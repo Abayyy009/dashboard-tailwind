@@ -381,24 +381,27 @@
 
                     <!-- Tabel Admin -->
                     <div class="w-full overflow-hidden rounded-lg shadow-xs">
-                        <table class="w-full whitespace-no-wrap bg-gray-500">
-                            <thead>
-                                <tr
-                                    class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-teal-50 dark:text-gray-400 dark:bg-gray-800">
-                                    <th class="py-3 px-4 text-center">No</th>
-                                    <th class="py-3 px-4 text-center">Nama</th>
-                                    <th class="py-3 px-4 text-center">Whatsapp</th>
-                                    <th class="py-3 px-4 text-center">Qty.Click</th>
-                                    <th class="py-3 px-4 text-center">Status</th>
-                                    <th class="py-3 px-4 text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="adminTableBody">
-                                <tr class="text-gray-700 dark:text-gray-400">
-                                    <td colspan=" 6" class="text-center py-4 text-gray-500">Loading...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="w-full overflow-x-auto">
+                            <table class="w-full whitespace-no-wrap bg-gray-500">
+                                <thead>
+                                    <tr
+                                        class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-teal-50 dark:text-gray-400 dark:bg-gray-800">
+                                        <th class="py-3 px-4 text-center">No</th>
+                                        <th class="py-3 px-4 text-center">Nama</th>
+                                        <th class="py-3 px-4 text-center">Whatsapp</th>
+                                        <th class="py-3 px-4 text-center">Qty.Click</th>
+                                        <th class="py-3 px-4 text-center">Status</th>
+                                        <th class="py-3 px-4 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+                                    id="adminTableBody">
+                                    <tr class="text-gray-700 dark:text-gray-400">
+                                        <td colspan=" 6" class="text-center py-4 text-gray-500">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- Footer Info + Pagination -->
