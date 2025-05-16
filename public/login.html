@@ -11,8 +11,9 @@
 
 <body
     class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-gray-900 dark:to-gray-800 min-h-screen flex items-center justify-center p-4">
-    <div
-        class="bg-white dark:bg-gray-700 shadow-2xl rounded-3xl w-full max-w-md overflow-hidden grid md:grid-cols-1 px-6 transform transition-transform duration-300 hover:scale-105">
+    <div id="container"
+        class="bg-white dark:bg-gray-700 shadow-2xl rounded-3xl w-full max-w-md px-6 transform transition-all duration-300 hover:scale-105">
+
         <div class="p-8 text-center">
 
             <!-- SVG LOGIN -->
@@ -202,6 +203,36 @@
             // Redirect ke dashboard
             window.location.href = "index.html";
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.otp-input');
+
+            inputs.forEach((input, i) => {
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && i < inputs.length - 1) {
+                        inputs[i + 1].focus();
+                    }
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value === '' && i > 0) {
+                        inputs[i - 1].focus();
+                    }
+                });
+
+                // Paste full OTP ke input pertama
+                input.addEventListener('paste', (e) => {
+                    const paste = e.clipboardData.getData('text').trim();
+                    if (/^\d{6}$/.test(paste)) {
+                        e.preventDefault();
+                        paste.split('').forEach((char, index) => {
+                            if (inputs[index]) inputs[index].value = char;
+                        });
+                        inputs[5].focus();
+                    }
+                });
+            });
+        });
 
 
     </script>
