@@ -644,6 +644,12 @@
                 }
 
                 function logout() {
+                    localStorage.removeItem("isLoggedIn");
+                    // Redirect dan ganti history (agar tombol back gak kembali ke dashboard)
+                    window.location.replace("login.html");
+                }
+
+                function logout() {
                     Swal.fire({
                         title: 'Yakin ingin logout?',
                         text: "Kamu akan keluar dari akunmu.",
