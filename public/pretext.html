@@ -315,7 +315,7 @@
                                     </li>
                                     <li class="flex">
                                         <a class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#">
+                                            href="javascript:void(0);" onclick="logout()">
                                             <svg class="w-4 h-4 mr-3" aria-hidden="true" fill="none"
                                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -804,7 +804,55 @@
 
             window.onload = fetchpretextData;
         </script>
-
+        <script>
+            if (localStorage.getItem("isLoggedIn") !== "true") {
+                // Redirect ke login kalau belum login
+                window.location.href = "login.html";
+            }
+            document.addEventListener('DOMContentLoaded', () => {
+                if (localStorage.getItem("isLoggedIn") !== "true") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Kamu harus login dulu!',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Redirect setelah user klik OK
+                        window.location.href = 'login.html';
+                    });
+                }
+            });
+            if (localStorage.getItem("isLoggedIn") !== "true") {
+                window.location.href = "login.html";
+            }
+            function logout() {
+                Swal.fire({
+                    title: 'Yakin ingin logout?',
+                    text: "Kamu akan keluar dari akunmu.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, logout!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Tampilkan animasi logout berhasil
+                        Swal.fire({
+                            title: 'Berhasil logout!',
+                            text: 'Sampai jumpa lagi 😊',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            didClose: () => {
+                                // Redirect setelah animasi selesai
+                                window.location.href = 'login.html'; // ganti ke halaman tujuanmu
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
 
     </div>
     </main>

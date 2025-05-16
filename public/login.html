@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login WA OTP</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body
+    class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-gray-900 dark:to-gray-800 min-h-screen flex items-center justify-center p-4">
+    <div
+        class="bg-white dark:bg-gray-700 shadow-2xl rounded-3xl w-full max-w-md overflow-hidden grid md:grid-cols-1 transform transition-transform duration-300 hover:scale-105">
+        <div class="p-8 text-center">
+
+            <!-- SVG LOGIN -->
+            <div id="step1">
+                <!-- SVG LOGIN -->
+                <svg id="svg-login" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"
+                    class="mx-auto mb-6 w-48 h-48 animate-pulse">
+                    <circle cx="200" cy="200" r="150" fill="#14B8A6" />
+                    <circle cx="200" cy="200" r="120" fill="#FFFFFF" />
+                    <circle cx="200" cy="200" r="90" fill="#2DD4BF" />
+                    <circle cx="200" cy="200" r="60" fill="#FFFFFF" />
+                    <text x="200" y="200" text-anchor="middle" fill="#0F766E" font-size="32" font-weight="bold"
+                        dy=".3em" class="text-center">LOGIN</text>
+                </svg>
+
+                <h2 class="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Login WAGO</h2>
+
+                <input id="phoneInput" type="text" placeholder="Enter your phone number"
+                    class="w-full p-2 border rounded mb-4 focus:outline-none" />
+                <button onclick="sendOTP()" class="w-full bg-teal-600 text-white py-2 rounded hover:bg-teal-700">
+                    Send OTP
+                </button>
+            </div>
+
+            <div id="step2" class="hidden">
+                <!-- SVG OTP -->
+                <svg id="svg-otp" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"
+                    class="mx-auto mb-6 w-48 h-48 animate-pulse">
+                    <circle cx="200" cy="200" r="150" fill="#14B8A6" />
+                    <circle cx="200" cy="200" r="120" fill="#FFFFFF" />
+                    <circle cx="200" cy="200" r="90" fill="#2DD4BF" />
+                    <circle cx="200" cy="200" r="60" fill="#FFFFFF" />
+                    <text x="200" y="200" text-anchor="middle" fill="#0F766E" font-size="32" font-weight="bold"
+                        dy=".3em" class="text-center">OTP</text>
+                </svg>
+
+                <h2 class="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Verify OTP</h2>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">Enter the 6-digit code sent to your WhatsApp
+                </p>
+
+                <!-- OTP boxes -->
+                <div class="flex justify-center space-x-4 mb-6">
+                    <input type="text" maxlength="1"
+                        class="otp-input w-12 h-16 text-center text-2xl border-2 border-teal-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-600 dark:text-white dark:border-teal-400 transition-transform duration-300 hover:scale-110">
+                    <input type="text" maxlength="1"
+                        class="otp-input w-12 h-16 text-center text-2xl border-2 border-teal-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-600 dark:text-white dark:border-teal-400 transition-transform duration-300 hover:scale-110">
+                    <input type="text" maxlength="1"
+                        class="otp-input w-12 h-16 text-center text-2xl border-2 border-teal-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-600 dark:text-white dark:border-teal-400 transition-transform duration-300 hover:scale-110">
+                    <input type="text" maxlength="1"
+                        class="otp-input w-12 h-16 text-center text-2xl border-2 border-teal-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-600 dark:text-white dark:border-teal-400 transition-transform duration-300 hover:scale-110">
+                    <input type="text" maxlength="1"
+                        class="otp-input w-12 h-16 text-center text-2xl border-2 border-teal-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-600 dark:text-white dark:border-teal-400 transition-transform duration-300 hover:scale-110">
+                    <input type="text" maxlength="1"
+                        class="otp-input w-12 h-16 text-center text-2xl border-2 border-teal-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-600 dark:text-white dark:border-teal-400 transition-transform duration-300 hover:scale-110">
+                </div>
+
+                <button onclick="verifyOTP()" class="w-full py-4 bg-teal-500 text-white rounded-xl hover:bg-teal-600
+        transition-transform duration-300 hover:scale-105 dark:bg-teal-600 dark:hover:bg-teal-700">
+                    Verify OTP
+                </button>
+            </div>
+
+
+        </div>
+
+        <p id="status" class="text-center text-sm text-gray-600 mt-4"></p>
+    </div>
+
+
+    <script>
+        let phone = '';
+
+        async function sendOTP() {
+            phone = document.getElementById("phoneInput").value.trim();
+
+            if (!phone) {
+                Swal.fire('Oops!', 'Nomor WA harus diisi!', 'warning');
+                return;
+            }
+
+            // Tampilkan alert lebih dulu (sebelum fetch)
+            Swal.fire({
+                icon: 'info',
+                title: 'Tunggu Proses Pengiriman OTP di Terima',
+                didOpen: () => {
+                    Swal.showLoading(); // Tambahkan loading spinner
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false
+            });
+
+            try {
+                const url = `https://auth.katib.cloud/login/5/${phone}`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data?.data?.status === "success") {
+                    Swal.close(); // Tutup alert
+                    document.getElementById("status").innerText = "OTP sent to WhatsApp!";
+                    document.getElementById("step1").classList.add("hidden");
+                    document.getElementById("step2").classList.remove("hidden");
+
+                    // Fokus ke kotak OTP pertama
+                    document.querySelector(".otp-input").focus();
+                } else {
+                    Swal.fire('Error', data?.data?.message || 'Failed to send OTP.', 'error');
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                Swal.fire('Error', 'Server error. Please try again.', 'error');
+            }
+        }
+
+
+        // Menggabungkan isi 6 kotak OTP jadi string
+        function getOTPValue() {
+            const inputs = document.querySelectorAll(".otp-input");
+            let otp = "";
+            inputs.forEach(input => {
+                otp += input.value.trim();
+            });
+            return otp;
+        }
+
+        async function verifyOTP() {
+            const otp = getOTPValue();
+
+            if (otp.length !== 6) {
+                Swal.fire('Oops!', 'OTP harus 6 digit!', 'warning');
+                return;
+            }
+
+            try {
+                const url = `https://auth.katib.cloud/otp/login`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phone, otp })
+                });
+
+                const data = await res.json();
+                console.log(data);
+
+                if (data?.message?.includes("Sesuai")) {
+                    localStorage.setItem("isLoggedIn", "true");
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Success!',
+                        text: 'Redirecting to dashboard...',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = "index.html";
+                    });
+                } else {
+                    Swal.fire('Error', 'OTP salah atau tidak valid.', 'error');
+                }
+            } catch (err) {
+                console.error("Verify Error:", err);
+                Swal.fire('Error', 'Verifikasi gagal.', 'error');
+            }
+        }
+
+        // Auto move fokus input OTP
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll(".otp-input");
+            inputs.forEach((input, i) => {
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && i < inputs.length - 1) {
+                        inputs[i + 1].focus();
+                    }
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === "Backspace" && input.value.length === 0 && i > 0) {
+                        inputs[i - 1].focus();
+                    }
+                });
+            });
+        });
+function logout() {
+                    Swal.fire({
+                        title: 'Yakin ingin logout?',
+                        text: "Kamu akan keluar dari akunmu.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, logout!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Tampilkan animasi logout berhasil
+                            Swal.fire({
+                                title: 'Berhasil logout!',
+                                text: 'Sampai jumpa lagi 😊',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                didClose: () => {
+                                    // Redirect setelah animasi selesai
+                                    window.location.href = 'login.html'; // ganti ke halaman tujuanmu
+                                }
+                            });
+                        }
+                    });
+                }
+
+
+    </script>
+</body>
+
+</html>
