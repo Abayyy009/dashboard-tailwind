@@ -204,35 +204,39 @@
             window.location.href = "index.html";
         }
 
+        // JavaScript OTP Paste Support (for Desktop & Mobile)
         document.addEventListener('DOMContentLoaded', () => {
-            const inputs = document.querySelectorAll('.otp-input');
+            const inputs = document.querySelectorAll(".otp-input");
 
             inputs.forEach((input, i) => {
-                input.addEventListener('input', () => {
+                // Auto move to next input
+                input.addEventListener("input", () => {
                     if (input.value.length === 1 && i < inputs.length - 1) {
                         inputs[i + 1].focus();
                     }
                 });
 
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' && input.value === '' && i > 0) {
+                // Backspace auto-move
+                input.addEventListener("keydown", (e) => {
+                    if (e.key === "Backspace" && input.value.length === 0 && i > 0) {
                         inputs[i - 1].focus();
                     }
                 });
 
-                // Paste full OTP ke input pertama
-                input.addEventListener('paste', (e) => {
-                    const paste = e.clipboardData.getData('text').trim();
+                // Handle paste (mobile & desktop)
+                input.addEventListener("paste", (e) => {
+                    e.preventDefault();
+                    const paste = (e.clipboardData || window.clipboardData).getData("text").trim();
                     if (/^\d{6}$/.test(paste)) {
-                        e.preventDefault();
-                        paste.split('').forEach((char, index) => {
-                            if (inputs[index]) inputs[index].value = char;
+                        paste.split("").forEach((digit, idx) => {
+                            if (inputs[idx]) inputs[idx].value = digit;
                         });
                         inputs[5].focus();
                     }
                 });
             });
         });
+
 
 
     </script>
