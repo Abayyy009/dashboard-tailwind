@@ -69,11 +69,6 @@
                     <input type="text" maxlength="1"
                         class="otp-input w-12 h-12 text-center text-2xl border-2 border-teal-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-600 dark:text-white dark:border-teal-400 transition-transform duration-300 hover:scale-110">
                 </div>
-
-                <button onclick="verifyOTP()" class="w-full py-4 bg-teal-500 text-white rounded-xl hover:bg-teal-600
-        transition-transform duration-300 hover:scale-105 dark:bg-teal-600 dark:hover:bg-teal-700">
-                    Verify OTP
-                </button>
             </div>
 
 
@@ -94,12 +89,11 @@
                 return;
             }
 
-            // Tampilkan alert lebih dulu (sebelum fetch)
             Swal.fire({
                 icon: 'info',
                 title: 'Tunggu Proses Pengiriman OTP di Terima',
                 didOpen: () => {
-                    Swal.showLoading(); // Tambahkan loading spinner
+                    Swal.showLoading();
                 },
                 allowOutsideClick: false,
                 allowEscapeKey: false,
@@ -112,12 +106,11 @@
                 const data = await res.json();
 
                 if (data?.data?.status === "success") {
-                    Swal.close(); // Tutup alert
+                    Swal.close();
                     document.getElementById("status").innerText = "OTP sent to WhatsApp!";
                     document.getElementById("step1").classList.add("hidden");
                     document.getElementById("step2").classList.remove("hidden");
 
-                    // Fokus ke kotak OTP pertama
                     document.querySelector(".otp-input").focus();
                 } else {
                     Swal.fire('Error', data?.data?.message || 'Failed to send OTP.', 'error');
@@ -128,8 +121,6 @@
             }
         }
 
-
-        // Menggabungkan isi 6 kotak OTP jadi string
         function getOTPValue() {
             const inputs = document.querySelectorAll(".otp-input");
             let otp = "";
@@ -147,6 +138,23 @@
                 return;
             }
 
+            await verifyOTPWithLoading(otp);
+        }
+
+        async function verifyOTPWithLoading(otp) {
+            // Sembunyikan tombol verify
+            const verifyBtn = document.querySelector('button[onclick="verifyOTP()"]');
+            if (verifyBtn) verifyBtn.style.display = "none";
+
+            Swal.fire({
+                title: 'Verifying OTP...',
+                text: 'Please wait while we verify your OTP.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             try {
                 const url = `https://auth.katib.cloud/otp/login`;
                 const res = await fetch(url, {
@@ -158,7 +166,6 @@
                 });
 
                 const data = await res.json();
-                console.log(data);
 
                 if (data?.message?.includes("Sesuai")) {
                     localStorage.setItem("isLoggedIn", "true");
@@ -173,38 +180,25 @@
                         window.location.href = "index.html";
                     });
                 } else {
-                    Swal.fire('Error', 'OTP salah atau tidak valid.', 'error');
+                    Swal.fire('Error', 'OTP salah atau tidak valid.', 'error').then(() => {
+                        if (verifyBtn) verifyBtn.style.display = "block";
+                        clearOTPInputs();
+                    });
                 }
             } catch (err) {
                 console.error("Verify Error:", err);
-                Swal.fire('Error', 'Verifikasi gagal.', 'error');
+                Swal.fire('Error', 'Verifikasi gagal.', 'error').then(() => {
+                    if (verifyBtn) verifyBtn.style.display = "block";
+                });
             }
         }
 
-        // Auto move fokus input OTP
-        document.addEventListener('DOMContentLoaded', () => {
+        function clearOTPInputs() {
             const inputs = document.querySelectorAll(".otp-input");
-            inputs.forEach((input, i) => {
-                input.addEventListener('input', () => {
-                    if (input.value.length === 1 && i < inputs.length - 1) {
-                        inputs[i + 1].focus();
-                    }
-                });
-
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === "Backspace" && input.value.length === 0 && i > 0) {
-                        inputs[i - 1].focus();
-                    }
-                });
-            });
-        });
-        function login() {
-            localStorage.setItem("isLoggedIn", "true");
-            // Redirect ke dashboard
-            window.location.href = "index.html";
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
         }
 
-        // JavaScript OTP Paste Support (for Desktop & Mobile)
         document.addEventListener('DOMContentLoaded', () => {
             const inputs = document.querySelectorAll(".otp-input");
 
@@ -213,6 +207,11 @@
                 input.addEventListener("input", () => {
                     if (input.value.length === 1 && i < inputs.length - 1) {
                         inputs[i + 1].focus();
+                    }
+
+                    // Cek semua OTP sudah terisi, langsung verifikasi otomatis
+                    if (Array.from(inputs).every(input => input.value.trim().length === 1)) {
+                        verifyOTPWithLoading(getOTPValue());
                     }
                 });
 
@@ -232,6 +231,9 @@
                             if (inputs[idx]) inputs[idx].value = digit;
                         });
                         inputs[5].focus();
+
+                        // Langsung verifikasi kalau OTP valid dipaste
+                        verifyOTPWithLoading(paste);
                     }
                 });
             });
