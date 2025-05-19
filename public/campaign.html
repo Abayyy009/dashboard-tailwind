@@ -16,6 +16,10 @@
     <script src="./assets/js/charts-pie.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
 </head>
 
 <body>
@@ -43,6 +47,7 @@
                 </ul>
                 <ul>
                     <li class="relative px-6 py-3">
+
                         <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                             href="admin.html">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -147,6 +152,7 @@
                 </ul>
                 <ul>
                     <li class="relative px-6 py-3">
+
                         <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                             href="admin.html">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -223,7 +229,7 @@
             </div>
         </aside>
         <div class="flex flex-col flex-1 w-full">
-            <header class="z-10 py-4 bg-white dark:bg-gray-800">
+            <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
                 <div
                     class="container flex items-center justify-between h-full px-6 mx-auto text-teal-600 dark:text-teal-300">
                     <!-- Mobile hamburger -->
@@ -236,21 +242,8 @@
                         </svg>
                     </button>
                     <!-- Search input -->
-                    <div class="flex justify-center flex-1 lg:mr-32">
-                        <div class="relative w-full max-w-xl mr-6 focus-within:text-teal-500">
-                            <div class="absolute inset-y-0 flex items-center pl-2">
-                                <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </div>
-                            <input
-                                class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-teal-300 focus:outline-none focus:shadow-outline-teal form-input"
-                                type="text" placeholder="Search for projects" aria-label="Search" />
-                        </div>
-                    </div>
-                    <ul class="flex items-center flex-shrink-0 space-x-6">
+
+                    <ul class="flex items-center flex-shrink-0 space-x-6 ml-auto">
                         <!-- Theme toggler -->
                         <li class="flex">
                             <button class="rounded-md focus:outline-none focus:shadow-outline-teal" @click="toggleTheme"
@@ -274,6 +267,8 @@
 
                         <!-- Profile menu -->
                         <li class="relative">
+                            <span id="usernameDisplay"
+                                class="text-sm font-medium text-gray-700 dark:text-gray-200"></span>
                             <button class="align-middle rounded-full focus:shadow-outline-teal focus:outline-none"
                                 @click="toggleProfileMenu" @keydown.escape="closeProfileMenu" aria-label="Account"
                                 aria-haspopup="true">
@@ -396,7 +391,6 @@
                                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-teal-50 dark:text-gray-400 dark:bg-gray-800">
                                         <th class="py-3 px-6 text-center">No.</th>
                                         <th class="py-3 px-6 text-center">Campaign</th>
-                                        <th class="py-3 px-6 text-center">Admin</th>
                                         <th class="py-3 px-6 text-center">Link</th>
                                         <th class="py-3 px-6 text-center">Tracking</th>
                                         <th class="py-3 px-6 text-center">Click</th>
@@ -534,7 +528,6 @@
                 <tr class="text-gray-700 dark:text-gray-400 border-b hover:bg-gray-100 transition">
                     <td class="py-3 px-4 text-center">${start + index + 1}</td>
                     <td class="py-3 px-4 text-left">${campaign.campaign_name}</td>
-                    <td class="py-3 px-4 text-left">${campaign.cs_count}</td>
                     <td class="py-3 px-4 text-center">
                         <a href="${campaign.url}" target="_blank" class="text-blue-500 hover:underline">${campaign.url}</a>
                     </td>
@@ -894,26 +887,28 @@
 
         </script>
         <script>
-            if (localStorage.getItem("isLoggedIn") !== "true") {
-                // Redirect ke login kalau belum login
-                window.location.href = "login.html";
-            }
+            // Cek apakah user sudah login
             document.addEventListener('DOMContentLoaded', () => {
-                if (localStorage.getItem("isLoggedIn") !== "true") {
+                const isLoggedIn = localStorage.getItem("isLoggedIn");
+                if (isLoggedIn !== "true") {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Oops...',
                         text: 'Kamu harus login dulu!',
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        // Redirect setelah user klik OK
                         window.location.href = 'login.html';
                     });
+                } else {
+                    // Tampilkan username kalau ada
+                    const username = localStorage.getItem("username");
+                    if (username) {
+                        const el = document.getElementById("usernameDisplay");
+                        if (el) el.textContent = username;
+                    }
                 }
             });
-            if (localStorage.getItem("isLoggedIn") !== "true") {
-                window.location.href = "login.html";
-            }
+
             function logout() {
                 Swal.fire({
                     title: 'Yakin ingin logout?',
@@ -926,7 +921,10 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Tampilkan animasi logout berhasil
+                        // Hapus semua data login
+                        localStorage.removeItem("isLoggedIn");
+                        localStorage.removeItem("username");
+
                         Swal.fire({
                             title: 'Berhasil logout!',
                             text: 'Sampai jumpa lagi 😊',
@@ -934,14 +932,22 @@
                             showConfirmButton: false,
                             timer: 1500,
                             didClose: () => {
-                                // Redirect setelah animasi selesai
-                                window.location.href = 'login.html'; // ganti ke halaman tujuanmu
+                                window.location.href = 'login.html';
                             }
                         });
                     }
                 });
             }
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const username = localStorage.getItem("username");
+                if (username) {
+                    document.getElementById("usernameDisplay").textContent = username;
+                }
+            });
+        </script>
+
 
     </div>
     </main>

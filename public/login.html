@@ -142,7 +142,6 @@
         }
 
         async function verifyOTPWithLoading(otp) {
-            // Sembunyikan tombol verify
             const verifyBtn = document.querySelector('button[onclick="verifyOTP()"]');
             if (verifyBtn) verifyBtn.style.display = "none";
 
@@ -168,7 +167,9 @@
                 const data = await res.json();
 
                 if (data?.message?.includes("Sesuai")) {
+                    // ✅ Simpan ke localStorage
                     localStorage.setItem("isLoggedIn", "true");
+                    localStorage.setItem("username", data.username); // <-- simpan username
 
                     Swal.fire({
                         icon: 'success',
@@ -203,26 +204,22 @@
             const inputs = document.querySelectorAll(".otp-input");
 
             inputs.forEach((input, i) => {
-                // Auto move to next input
                 input.addEventListener("input", () => {
                     if (input.value.length === 1 && i < inputs.length - 1) {
                         inputs[i + 1].focus();
                     }
 
-                    // Cek semua OTP sudah terisi, langsung verifikasi otomatis
                     if (Array.from(inputs).every(input => input.value.trim().length === 1)) {
                         verifyOTPWithLoading(getOTPValue());
                     }
                 });
 
-                // Backspace auto-move
                 input.addEventListener("keydown", (e) => {
                     if (e.key === "Backspace" && input.value.length === 0 && i > 0) {
                         inputs[i - 1].focus();
                     }
                 });
 
-                // Handle paste (mobile & desktop)
                 input.addEventListener("paste", (e) => {
                     e.preventDefault();
                     const paste = (e.clipboardData || window.clipboardData).getData("text").trim();
@@ -231,17 +228,13 @@
                             if (inputs[idx]) inputs[idx].value = digit;
                         });
                         inputs[5].focus();
-
-                        // Langsung verifikasi kalau OTP valid dipaste
                         verifyOTPWithLoading(paste);
                     }
                 });
             });
         });
-
-
-
     </script>
+
 </body>
 
 </html>
