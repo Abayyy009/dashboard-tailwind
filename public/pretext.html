@@ -842,11 +842,18 @@
 
             // ==== SWEETALERT UTILS ====
             function showPopupSuccess(msg) {
-                Swal.fire({ icon: 'success', title: 'Berhasil', text: msg, confirmButtonColor: '#6366f1' });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: msg,
+                    showConfirmButton: false,
+                    timer: 2000 // popup hilang otomatis dalam 2 detik
+                });
             }
 
+
             function showPopupError(msg) {
-                Swal.fire({ icon: 'error', title: 'Gagal', text: msg, confirmButtonColor: '#6366f1' });
+                Swal.fire({ icon: 'error', title: 'Gagal', text: msg, showConfirmButton: false, time: 2000 });
             }
             function showPopup(message) {
                 Swal.fire({

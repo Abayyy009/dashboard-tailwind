@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wago - Solusi Distribusi Leads</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tambahkan di dalam <head> -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Tambahkan sebelum penutup </body> -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true, // Animasi hanya terjadi sekali saat scroll
+            duration: 800, // Durasi animasi dalam milidetik
+        });
+    </script>
+
+    <style>
+        [data-animate] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        [data-animate].visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="text-white bg-white">
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="bg-white text-black shadow px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="text-2xl font-bold">Wago</div>
+
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex gap-6 font-medium items-center">
+            <li><a href="#" class="hover:text-green-600">Beranda</a></li>
+            <li><a href="#" class="hover:text-green-600">Fitur</a></li>
+            <li><a href="#" class="hover:text-green-600">Testimoni</a></li>
+            <li><a href="#" class="hover:text-green-600">Daftar</a></li>
+            <li><a href="#" class="hover:text-green-600">Tentang Kami</a></li>
+        </ul>
+
+        <!-- Desktop Action -->
+        <div class="hidden md:flex items-center gap-3">
+            <a href="#" class="font-semibold hover:text-green-600">Login</a>
+            <a href="#" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full">Daftar</a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <div class="md:hidden">
+            <button id="toggleMenu" class="text-3xl focus:outline-none">&#9776;</button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed inset-0 bg-white text-black flex flex-col px-6 py-4 z-40">
+        <div class="flex justify-between items-center mb-4">
+            <div class="text-2xl font-bold">Wago</div>
+            <button id="closeMenu" class="text-3xl font-bold focus:outline-none">&times;</button>
+        </div>
+        <a href="#" class="py-3 border-b hover:text-green-600">Beranda</a>
+        <a href="#" class="py-3 border-b hover:text-green-600">Fitur</a>
+        <a href="#" class="py-3 border-b hover:text-green-600">Testimoni</a>
+        <a href="#" class="py-3 border-b hover:text-green-600">Daftar</a>
+        <a href="#" class="py-3 border-b hover:text-green-600">Tentang Kami</a>
+        <a href="#" class="py-3 font-semibold hover:text-green-600">Login</a>
+        <a href="#"
+            class="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full text-center mt-4">Daftar</a>
+    </div>
+
+
+    <!-- Hero Section -->
+    <section data-animate class="bg-green-500 px-6 py-12 flex flex-col-reverse md:flex-row items-center">
+        <div class="md:w-1/2 mt-8 md:mt-0">
+            <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-6">
+                Ingin leads terdistribusi secara adil dan efisien? Temukan solusi mudah untuk meningkatkan konversi
+                iklan Anda!
+            </h1>
+            <p class="mb-6 text-white">
+                Bayangkan jika Anda bisa mendistribusikan semua leads secara otomatis kepada tim sales Anda tanpa repot,
+                sekaligus meningkatkan konversi iklan WhatsApp dengan cara yang lebih hemat biaya.
+            </p>
+            <a href="#" class="bg-black text-white px-6 py-3 rounded-full font-semibold">Pelajari Selengkapnya</a>
+        </div>
+        <div class="md:w-1/2">
+            <img src="assets/img/hero.png" alt="Ilustrasi" class="w-full">
+        </div>
+    </section>
+
+
+    <!-- Tentang Section -->
+    <section data-animate class="text-black px-6 py-48 text-center max-w-6xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            Perkenalkan, Wa Go! — Solusi Terdepan untuk Distribusi Leads dan Optimasi Iklan WhatsApp!
+        </h1>
+        <p class="text-lg md:text-xl max-w-4xl mx-auto">
+            Wa Go! mempermudah Anda dalam mendistribusikan leads secara otomatis kepada tim,
+            memastikan setiap leads sampai di tangan yang tepat. Dilengkapi fitur click to chat,
+            pixel tracking, dan laporan analitik real-time.
+        </p>
+    </section>
+
+
+    <section data-animate class="bg-black text-green-400 px-6 py-20 text-center">
+        <h2 class="text-3xl md:text-3xl font-extrabold leading-snug max-w-5xl mx-auto text-green-500 mb-10">
+            Bayangkan betapa efisiennya kampanye iklan Anda jika setiap leads<br class="hidden md:block" />
+            dikelola dengan baik, anggaran iklan lebih hemat, dan hasil A/B<br class="hidden md:block" />
+            testing lebih akurat.
+        </h2>
+
+        <div class="text-white text-left max-w-3xl mx-auto space-y-5 text-lg">
+            <p class="font-medium">Dengan WaGo, Anda dapat:</p>
+
+            <ul class="space-y-4">
+                <li class="flex items-start gap-3">
+                    <span class="text-green-400 text-xl">✔</span>
+                    <span>Mendistribusikan leads secara adil kepada tim sales, admin, dan CS tanpa ribet</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-green-400 text-xl">✔</span>
+                    <span>Mengoptimalkan iklan yang berfokus pada konversi click to chat WhatsApp</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-green-400 text-xl">✔</span>
+                    <span>Melacak performa iklan dengan pixel tracking untuk meningkatkan hasil kampanye Anda</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-green-400 text-xl">✔</span>
+                    <span>Hemat waktu dan anggaran dengan hasil yang lebih terukur dan efektif</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+
+    <section data-animate class="px-6 py-20 text-center text-black">
+        <h2 class="text-4xl font-extrabold text-green-500 mb-12">Frequently Asked Questions</h2>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- FAQ Item -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-semibold text-green-600 mb-2">How long do your products take to be shipped?</h3>
+                <p class="text-sm text-gray-800">
+                    Having an FAQ section is a great way to present information about your product or service.
+                    Using question-and-answer format makes it more relatable to your users.
+                </p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-semibold text-green-600 mb-2">Do I have to pay taxes on your products?</h3>
+                <p class="text-sm text-gray-800">
+                    Having an FAQ section is a great way to present information about your product or service.
+                    Using question-and-answer format makes it more relatable to your users.
+                </p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-semibold text-green-600 mb-2">Do you offer any refunds or returns?</h3>
+                <p class="text-sm text-gray-800">
+                    Having an FAQ section is a great way to present information about your product or service.
+                    Using question-and-answer format makes it more relatable to your users.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <section data-animate class="px-6 py-20 text-center text-black">
+        <h2 class="text-4xl font-extrabold text-green-500 mb-12">Reviews</h2>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Review Card -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                <img src="https://i.pravatar.cc/100?img=1" alt="Bayu"
+                    class="w-20 h-20 mx-auto rounded-full mb-4 object-cover">
+                <p class="text-sm text-gray-800 mb-4">
+                    Alhamdulillah, dengan Wago bisnis dan proses sales saya semakin lancar.
+                </p>
+                <p class="font-bold text-green-600">Bayu</p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                <img src="https://i.pravatar.cc/100?img=2" alt="Ayu"
+                    class="w-20 h-20 mx-auto rounded-full mb-4 object-cover">
+                <p class="text-sm text-gray-800 mb-4">
+                    Wago menyederhanakan manajemen leads kami secara signifikan.
+                </p>
+                <p class="font-bold text-green-600">Ayu</p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl shadow-md">
+                <img src="https://i.pravatar.cc/100?img=3" alt="Farhan"
+                    class="w-20 h-20 mx-auto rounded-full mb-4 object-cover">
+                <p class="text-sm text-gray-800 mb-4">
+                    Fitur otomatisasi Wago telah meningkatkan efisiensi bisnis kami hingga 30%.
+                </p>
+                <p class="font-bold text-green-600">Farhan</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Pricing Section -->
+    <section data-animate class="bg-black text-white px-6 py-20 text-center">
+        <h2 class="text-4xl font-extrabold mb-12 text-green-400">Pricing</h2>
+
+        <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+            <!-- Basic Plan -->
+            <div class="bg-white text-black p-8 rounded-xl shadow-lg flex flex-col justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold mb-2">Basic</h3>
+                    <p class="text-3xl font-bold mb-6">Rp50rb</p>
+                    <ul class="text-left space-y-3">
+                        <li class="flex items-center gap-2"><span class="text-green-500">✔</span> 1 akun WA</li>
+                        <li class="flex items-center gap-2"><span class="text-green-500">✔</span> No Chat Click
+                            Generator</li>
+                        <li class="flex items-center gap-2"><span class="text-green-500">✔</span> Pixel Tracking</li>
+                    </ul>
+                </div>
+                <div class="mt-8 flex justify-center">
+                    <a href="#" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">Pelajari
+                        Selengkapnya</a>
+                </div>
+            </div>
+
+            <!-- Advanced Plan -->
+            <div class="bg-white text-black p-8 rounded-xl shadow-lg flex flex-col justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold mb-2">Advanced</h3>
+                    <p class="text-xl font-semibold line-through text-gray-400">Rp95rb</p>
+                    <p class="text-3xl font-bold mb-6">Rp75rb</p>
+                    <ul class="text-left space-y-3">
+                        <li class="flex items-center gap-2"><span class="text-green-500">✔</span> Semua fitur Basic</li>
+                        <li class="flex items-center gap-2"><span class="text-green-500">✔</span> Chat Click Generator
+                        </li>
+                        <li class="flex items-center gap-2"><span class="text-green-500">✔</span> Segment produk</li>
+                        <li class="flex items-center gap-2"><span class="text-green-500">✔</span> Generator formulir +
+                            checklist produk</li>
+                    </ul>
+                </div>
+                <div class="mt-8 flex justify-center">
+                    <a href="#" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">Pelajari
+                        Selengkapnya</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA -->
+    <!-- CTA Section -->
+    <section data-animate class="bg-green-500 px-6 py-20 text-center text-white">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-6 leading-tight">
+                Siap Meningkatkan Konversi dan Distribusi Leads Anda? <br class="hidden md:block" />
+                Dapatkan <span class="text-white">WaGo</span> Sekarang!
+            </h2>
+            <p class="text-lg mb-10">
+                Dengan WaGo Anda dapat mendistribusikan leads secara adil kepada tim sales, admin, dan CS tanpa ribet.
+                Mengoptimalkan iklan yang berfokus pada konversi click to chat WhatsApp. Melacak performa iklan dengan
+                pixel tracking untuk hasil kampanye yang lebih efektif dan terukur.
+            </p>
+            <a href="#"
+                class="bg-black text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-900 transition-all duration-300 shadow-lg inline-block">
+                Daftar Sekarang
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-black text-white px-6 py-12">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 text-sm text-left">
+            <!-- Logo & Address -->
+            <div>
+                <h3 class="text-xl font-bold mb-4">Wago</h3>
+                <p class="text-gray-300">Jl. Raaya Bojong Gede<br>No.12-A, Kec. Bojong Gede<br>Kab. Bogor 123456</p>
+            </div>
+
+            <!-- Sitemap -->
+            <div>
+                <h4 class="font-semibold mb-3">Sitemap</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-green-400">Beranda</a></li>
+                    <li><a href="#" class="hover:text-green-400">Fitur</a></li>
+                    <li><a href="#" class="hover:text-green-400">Testimoni</a></li>
+                    <li><a href="#" class="hover:text-green-400">Daftar</a></li>
+                    <li><a href="#" class="hover:text-green-400">Tentang Kami</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal -->
+            <div>
+                <h4 class="font-semibold mb-3">Ketentuan</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-green-400">Ketentuan Layanan</a></li>
+                    <li><a href="#" class="hover:text-green-400">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h4 class="font-semibold mb-3">Contact Us</h4>
+                <p class="text-gray-300 mb-2">+62857-7099-8885</p>
+                <p class="text-gray-300 mb-4">wago@gmail.com</p>
+                <div class="flex gap-3">
+                    <a href="#"
+                        class="bg-white text-black w-8 h-8 flex items-center justify-center rounded-full hover:bg-green-400 transition">🌐</a>
+                    <a href="#"
+                        class="bg-white text-black w-8 h-8 flex items-center justify-center rounded-full hover:bg-green-400 transition">📘</a>
+                    <a href="#"
+                        class="bg-white text-black w-8 h-8 flex items-center justify-center rounded-full hover:bg-green-400 transition">📸</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // Toggle menu visibility
+        const toggleMenu = document.getElementById("toggleMenu");
+        const closeMenu = document.getElementById("closeMenu");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        toggleMenu.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+
+        closeMenu.addEventListener("click", () => {
+            mobileMenu.classList.add("hidden");
+        });
+
+        // Intersection Observer for animation
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('[data-animate]').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+
+</html>
