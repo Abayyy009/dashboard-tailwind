@@ -726,7 +726,22 @@
                         showPopupSuccess('Data berhasil diperbarui!');
                         await fetchpretextData();
                         closeModal('modalEdit');
-                    } else {
+                    } if (res.ok) {
+                        showPopupSuccess('Data berhasil diperbarui!');
+
+                        // Update data lokal langsung
+                        const index = allpretextData.findIndex(p => p.text_id == id);
+                        if (index !== -1) {
+                            allpretextData[index].description = description;
+                            allpretextData[index].text = text;
+                        }
+                        filteredpretextData = [...allpretextData];
+                        renderTablePage();
+                        renderPagination(filteredpretextData);
+
+                        closeModal('modalEdit');
+                    }
+                    else {
                         showPopupError(result.message || 'Gagal memperbarui data.');
                     }
                 } catch (err) {
